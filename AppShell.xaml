@@ -7,8 +7,13 @@
     Title="Astari25">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Start"
+        ContentTemplate="{DataTemplate ViewState:StartPage}"/>
+    <ShellContent
+    Title="Game"
+    ContentTemplate="{DataTemplate ViewState:GamePage}"/>
+    <ShellContent
+    Title="Settings"
+    ContentTemplate="{DataTemplate ViewState:SettingsPage}"/>
 
 </Shell>

@@ -1,0 +1,23 @@
+﻿# Visual Studio cache and files
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# MAUI specific cache
+*.tlog
+*.log
+*.db
+*.cache
+*.pdb
+
+# User-specific settings
+*.vscode/
+*.csproj.user
+
+# Xamarin / Android SDK files
+*.apk
+*.aab
