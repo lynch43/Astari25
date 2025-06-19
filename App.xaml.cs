@@ -5,6 +5,8 @@ public partial class App : Application
 	public App()
 	{
 		InitializeComponent();
+		// NavigationPage is there for .PushAsync()
+		MainPage = new NavigationPage(new StartPage());
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)
