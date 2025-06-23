@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Astari25.GamePage"
-             Title="GamePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Astari25">
+    <Grid>
+        <GraphicsView x:Name="GameCanvas"
+                      Drawable="{Binding GameDrawable}"
+                      HeightRequest="600"
+                      WidthRequest="600"
+                      BackgroundColor="Black"/>
+    </Grid>
 </ContentPage>
