@@ -4,16 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Astari25"
+    xmlns:views="clr-namespace:Astari25.Views"
     Title="Astari25">
 
     <ShellContent
         Title="Start"
-        ContentTemplate="{DataTemplate ViewState:StartPage}"/>
+        ContentTemplate="{DataTemplate views:StartPage}"/>
     <ShellContent
     Title="Game"
-    ContentTemplate="{DataTemplate ViewState:GamePage}"/>
+    ContentTemplate="{DataTemplate views:GamePage}"/>
     <ShellContent
     Title="Settings"
-    ContentTemplate="{DataTemplate ViewState:SettingsPage}"/>
+    ContentTemplate="{DataTemplate views:SettingsPage}"/>
 
 </Shell>
