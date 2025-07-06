@@ -41,4 +41,9 @@
 		<MauiXaml Update="Views\GamePage.xaml" Generator="MSBuild:Compile" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="NewFolder1\" />
+	  <Folder Include="NewFolder\NewFolder\" />
+	</ItemGroup>
+
 </Project>
