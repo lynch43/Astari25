@@ -1,4 +1,6 @@
-﻿namespace Astari25;
+﻿using Astari25.Views;
+
+namespace Astari25;
 
 public partial class App : Application
 {
