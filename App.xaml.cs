@@ -11,8 +11,5 @@ public partial class App : Application
 		MainPage = new NavigationPage(new StartPage());
 	}
 
-	protected override Window CreateWindow(IActivationState? activationState)
-	{
-		return new Window(new AppShell());
-	}
+
 }
