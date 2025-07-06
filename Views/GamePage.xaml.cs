@@ -8,6 +8,5 @@ public partial class GamePage : ContentPage
 	{
 		InitializeComponent();
 
-		GameCanvas.Drawable = new GameDrawable();
 	}
 }
