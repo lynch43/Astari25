@@ -5,11 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Maui.Graphics;
 using Astari25.Views;
+using Astari25.Models;
 
 namespace Astari25.ViewModels
 {
-    internal class GamePageViewModel
+    public class GamePageViewModel
     {
-        public IDrawable GameDrawable { get; } = new GameRenderer();
+        public Player Player { get; } = new Player();
+        public IDrawable GameDrawable { get; }
+
+        public GamePageViewModel() {
+            GameDrawable = new GameRenderer(Player);
+        }
     }
 }
