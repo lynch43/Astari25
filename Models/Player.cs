@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Astari25.Models
 {
-    class Player
+    public class Player
     {
 
         public float X { get; set; } = 300;
