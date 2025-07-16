@@ -43,6 +43,7 @@
 
 	<ItemGroup>
 	  <Folder Include="NewFolder1\" />
+	  <Folder Include="NewFolder2\" />
 	  <Folder Include="NewFolder\NewFolder\" />
 	</ItemGroup>
 

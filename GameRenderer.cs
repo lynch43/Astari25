@@ -5,10 +5,10 @@ namespace Astari25.Views {
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             canvas.FillColor = Colors.Black;
-            canvas.FillRectangle(dirtyRect); // Cleart background
+            canvas.FillRectangle(dirtyRect); // Clear background
 
             canvas.StrokeColor = Colors.White;
-            canvas.DrawCircle(300, 300, 20); // IPlaceholder: Ship
+            canvas.FillCircle(300, 300, 20); // IPlaceholder: Ship
         }
     }
 }
