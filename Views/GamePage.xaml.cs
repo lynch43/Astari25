@@ -27,6 +27,7 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
+            _viewModel.Update();
             GameCanvas.Invalidate();
         });
     }

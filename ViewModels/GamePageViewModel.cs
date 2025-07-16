@@ -18,7 +18,10 @@ namespace Astari25.ViewModels
             GameDrawable = new GameRenderer(Player);
         }
 
-        
+        public void Update() {
+            // go right slow
+            Player.X+=2;
+        }
     }
 
 
