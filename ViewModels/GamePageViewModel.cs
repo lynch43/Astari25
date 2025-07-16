@@ -17,5 +17,9 @@ namespace Astari25.ViewModels
         public GamePageViewModel() {
             GameDrawable = new GameRenderer(Player);
         }
+
+        
     }
+
+
 }
