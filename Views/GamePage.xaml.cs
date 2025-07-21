@@ -1,5 +1,6 @@
 using Astari25.ViewModels;
-using System.Timers; // needed for Elapsed EventArgs
+using System.Timers;
+using UIKit; // needed for Elapsed EventArgs
 
 namespace Astari25.Views;
 
@@ -40,4 +41,16 @@ public partial class GamePage : ContentPage
             GameCanvas.Invalidate(); // makes the game reprint the Canvas
         });
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        this.Focus(); // checks for kb
+        this.KeyDown += OnKeyDown;
+    }
+
+    private void OnKeyDown(object sender, UIKeyboardEventArgs e) { 
+        
+    }
 }
+
