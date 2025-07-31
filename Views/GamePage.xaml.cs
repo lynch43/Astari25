@@ -1,6 +1,5 @@
 using Astari25.ViewModels;
 using System.Timers;
-using UIKit; // needed for Elapsed EventArgs
 
 namespace Astari25.Views;
 
@@ -30,7 +29,7 @@ public partial class GamePage : ContentPage
     }
 
     // This is running ever frame. 60 per sec
-    // It update the game logic and redwars the screen
+    // It update the game logic and redraws the screen
     private void OnGameLoop(object sender, ElapsedEventArgs e)
     {
 
@@ -42,15 +41,7 @@ public partial class GamePage : ContentPage
         });
     }
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        this.Focus(); // checks for kb
-        this.KeyDown += OnKeyDown;
-    }
+    
 
-    private void OnKeyDown(object sender, UIKeyboardEventArgs e) { 
-        
-    }
 }
 
