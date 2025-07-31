@@ -10,12 +10,17 @@
     </ContentPage.BindingContext>
     <Grid>
         <GraphicsView x:Name="GameCanvas"
-                      Drawable="{Binding GameDrawable}"
-                      HeightRequest="600"
-                      WidthRequest="600"
-                      BackgroundColor="Black"/>
+                  Drawable="{Binding GameDrawable}"
+                  HeightRequest="600"
+                  WidthRequest="600"
+                  BackgroundColor="Black"/>
+
         
-        <Grid RowDefinitions="Auto, Auto,Auto"
+        <VerticalStackLayout VerticalOptions="End"
+                         HorizontalOptions="Center"
+                         Margin="0,0,0,30">
+
+            <Grid RowDefinitions="Auto,Auto,Auto"
               ColumnDefinitions="Auto,Auto,Auto"
               VerticalOptions="End"
               HorizontalOptions="Center"
@@ -23,48 +28,40 @@
               ColumnSpacing="10"
               Margin="10">
 
-            <Button Text="↑"
-                    Grid.Row="0" 
-                    Grid.Column="1"
+                <Button Text="↑"
+                    Grid.Row="0" Grid.Column="1"
                     FontSize="50"
                     WidthRequest="80"
                     HeightRequest="80"
                     Clicked="OnUpClicked"/>
-            <Button Text="←" 
-                    Grid.Row="1"
-                    Grid.Column="0" 
-                    Clicked="OnLeftClicked"
+                <Button Text="←"
+                    Grid.Row="1" Grid.Column="0"
                     FontSize="50"
                     WidthRequest="80"
-                    HeightRequest="70"/>
-            <Button Text="→"
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Clicked="OnRightClicked"
+                    HeightRequest="80"
+                    Clicked="OnLeftClicked"/>
+                <Button Text="→"
+                    Grid.Row="1" Grid.Column="2"
                     FontSize="50"
                     WidthRequest="80"
-                    HeightRequest="80"/>
-            <Button Text="↓"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Clicked="OnDownClicked"
+                    HeightRequest="80"
+                    Clicked="OnRightClicked"/>
+                <Button Text="↓"
+                    Grid.Row="2" Grid.Column="1"
                     FontSize="50"
                     WidthRequest="80"
-                    HeightRequest="80"/>
-        </Grid>
+                    HeightRequest="80"
+                    Clicked="OnDownClicked"/>
+            </Grid>
 
-
-        <Button Text="Shoot"
-                FontSize="20"
-                WidthRequest="120"
-                HeightRequest="60"
+            
+            <Button Text="Shoot"
+                FontSize="24"
+                WidthRequest="130"
+                HeightRequest="65"
                 HorizontalOptions="Center"
-                Margin="0,0,0,A0"
+                Margin="0,10,0,0"
                 Clicked="OnShootClicked"/>
-        
-
-
-
-
+        </VerticalStackLayout>
     </Grid>
 </ContentPage>
