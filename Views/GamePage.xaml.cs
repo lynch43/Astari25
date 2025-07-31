@@ -1,3 +1,4 @@
+using Astari25.Models;
 using Astari25.ViewModels;
 using System.Timers;
 
@@ -64,7 +65,12 @@ public partial class GamePage : ContentPage
 
     // pew singular
     private void OnShootClicked(object sender, EventArgs e) {
-        Console.WriteLine("Pew");
+        //Console.WriteLine("Pew");
+        // Creat a new bullet from player
+        var bullet = new Bullet(_viewModel.Player.X, _viewModel.Player.Y);
+
+        // Add the bullet to the ViewModel list
+        _viewModel.Bullets.Add(bullet);
     }
 
 

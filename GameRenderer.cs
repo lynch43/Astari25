@@ -1,16 +1,19 @@
 ﻿using Microsoft.Maui.Graphics;
 using Astari25.Models;
+using System.Collections.ObjectModel;
 
 namespace Astari25.Views { 
    public class GameRenderer : IDrawable
     {
 
-        // immutable field - ensure data remaining constant
+        
         private readonly Player _player;
+        private readonly ObservableCollection<Bullet> _bullets;
 
-        public GameRenderer(Player player) {
+        public GameRenderer(Player player, ObservableCollection<Bullet> bullets) {
 
             _player = player;
+            _bullets = bullets;
         }
 
         
@@ -22,6 +25,11 @@ namespace Astari25.Views {
 
             canvas.StrokeColor = Colors.White;
             canvas.DrawCircle(_player.X, _player.Y, _player.Radius);
+
+            canvas.FillColor = Colors.Yellow;
+            foreach (var bullet in _bullets) {
+                canvas.FillCircle(bullet.X, bullet.Y, 5);
+            }
         }
     }
 }

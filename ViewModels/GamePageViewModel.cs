@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Graphics;
 using Astari25.Views;
 using Astari25.Models;
+using System.Collections.ObjectModel;
 
 namespace Astari25.ViewModels
 {
@@ -14,13 +15,19 @@ namespace Astari25.ViewModels
         public Player Player { get; } = new Player();
         public IDrawable GameDrawable { get; }
 
+        public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
         public GamePageViewModel() {
-            GameDrawable = new GameRenderer(Player);
+            GameDrawable = new GameRenderer(Player, Bullets);
         }
 
         public void Update() {
             // go right slow
             //Player.X+=2;
+
+
+            foreach (var bullet in Bullets) {
+                bullet.Update();
+            }
         }
     }
 

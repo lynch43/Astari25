@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Astari25.Models
 {
-    internal class Bullet
+    public class Bullet
     {
 
         public float X { get; set; }
