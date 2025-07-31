@@ -19,12 +19,38 @@
               ColumnDefinitions="Auto,Auto,Auto"
               VerticalOptions="End"
               HorizontalOptions="Center"
-              Margin="20">
+              RowSpacing="10"
+              ColumnSpacing="10"
+              Margin="10">
 
-            <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnUpClicked"/>
-            <Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnLeftClicked"/>
-            <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnRightClicked"/>
-            <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnDownClicked"/>
+            <Button Text="↑"
+                    Grid.Row="0" 
+                    Grid.Column="1"
+                    FontSize="50"
+                    WidthRequest="80"
+                    HeightRequest="80"
+                    Clicked="OnUpClicked"/>
+            <Button Text="←" 
+                    Grid.Row="1"
+                    Grid.Column="0" 
+                    Clicked="OnLeftClicked"
+                    FontSize="50"
+                    WidthRequest="80"
+                    HeightRequest="70"/>
+            <Button Text="→"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Clicked="OnRightClicked"
+                    FontSize="50"
+                    WidthRequest="80"
+                    HeightRequest="80"/>
+            <Button Text="↓"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Clicked="OnDownClicked"
+                    FontSize="50"
+                    WidthRequest="80"
+                    HeightRequest="80"/>
         </Grid>
     </Grid>
 </ContentPage>
