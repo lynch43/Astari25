@@ -41,7 +41,26 @@ public partial class GamePage : ContentPage
         });
     }
 
+    private void OnUpClicked(object sender, EventArgs e) {
+
+        _viewModel.Player.Y -= 10;
+
+    }
+
+    private void OnDownClicked(object sender, EventArgs e)
+    {
+        _viewModel.Player.Y += 10;
+    }
+
+    private void OnLeftClicked(object sender, EventArgs e) { 
+        _viewModel.Player.X -= 10;
+    }
+
+    private void OnRightClicked(object sender, EventArgs e) { 
     
+        _viewModel.Player.X += 10;
+    }
+
 
 }
 

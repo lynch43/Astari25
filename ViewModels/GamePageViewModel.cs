@@ -20,7 +20,7 @@ namespace Astari25.ViewModels
 
         public void Update() {
             // go right slow
-            Player.X+=2;
+            //Player.X+=2;
         }
     }
 

@@ -21,10 +21,10 @@
               HorizontalOptions="Center"
               Margin="20">
 
-            <Button Text="Up" Grid.Row="0" Grid.Column="1" Clicked="OnUpClicked"/>
-            <Button Text="Left" Grid.Row="1" Grid.Column="0" Clicked="OnLeftClicked"/>
-            <Button Text="Right" Grid.Row="1" Grid.Column="2" Clicked="OnRightClicked"/>
-            <Button Text="Down" Grid.Row="2" Grid.Column="1" Clicked="OnDownClicked"/>
+            <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnUpClicked"/>
+            <Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnLeftClicked"/>
+            <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnRightClicked"/>
+            <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnDownClicked"/>
         </Grid>
     </Grid>
 </ContentPage>
