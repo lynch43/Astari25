@@ -62,5 +62,11 @@ public partial class GamePage : ContentPage
     }
 
 
+    // pew singular
+    private void OnShootClicked(object sender, EventArgs e) {
+        Console.WriteLine("Pew");
+    }
+
+
 }
 
