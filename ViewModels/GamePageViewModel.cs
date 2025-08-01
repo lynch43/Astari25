@@ -20,7 +20,7 @@ namespace Astari25.ViewModels
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
 
         public GamePageViewModel() {
-            GameDrawable = new GameRenderer(Player, Bullets);
+            GameDrawable = new GameRenderer(Player, Bullets, Enemies);
         }
 
         public void Update() {
@@ -37,9 +37,11 @@ namespace Astari25.ViewModels
             }
 
             // Spawns enemy randomly within the 60 frames so 4 seconds?
-            if (Random.Shared.Next(0, 60) == 0) {
+            if (Random.Shared.Next(0, 50) == 0) {
                 float startX = Random.Shared.Next(50, 500); // give random X coordinate
                 Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
+
+                Console.WriteLine($"bad guy spawned at coord={startX}");
             }
         }
     }
