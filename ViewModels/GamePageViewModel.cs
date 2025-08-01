@@ -37,8 +37,8 @@ namespace Astari25.ViewModels
             }
 
             // Spawns enemy randomly within the 60 frames so 4 seconds?
-            if (Random.Shared.Next(0, 50) == 0) {
-                float startX = Random.Shared.Next(50, 500); // give random X coordinate
+            if (Random.Shared.Next(0, 120) == 0) {
+                float startX = Random.Shared.Next(50, 600); // give random X coordinate
                 Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
 
                 Console.WriteLine($"bad guy spawned at coord={startX}");
