@@ -27,40 +27,41 @@
               HorizontalOptions="Center"
               RowSpacing="8"
               ColumnSpacing="8"
-              Margin="10">
+              Margin="0,0,0,10">
 
                 <Button Text="↑"
                     Grid.Row="0" Grid.Column="1"
                     FontSize="28"
-                    WidthRequest="65"
-                    HeightRequest="65"
+                    WidthRequest="60"
+                    HeightRequest="60"
                     Clicked="OnUpClicked"/>
                 <Button Text="←"
                     Grid.Row="1" Grid.Column="0"
                     FontSize="28"
-                    WidthRequest="65"
-                    HeightRequest="65"
+                    WidthRequest="60"
+                    HeightRequest="60"
                     Clicked="OnLeftClicked"/>
                 <Button Text="→"
                     Grid.Row="1" Grid.Column="2"
                     FontSize="28"
-                    WidthRequest="65"
-                    HeightRequest="65"
+                    WidthRequest="60"
+                    HeightRequest="60"
                     Clicked="OnRightClicked"/>
                 <Button Text="↓"
                     Grid.Row="2" Grid.Column="1"
                     FontSize="28"
-                    WidthRequest="65"
-                    HeightRequest="65"
+                    WidthRequest="60"
+                    HeightRequest="60"
                     Clicked="OnDownClicked"/>
             </Grid>
 
             
             <Button Text="Shoot"
                 FontSize="24"
-                WidthRequest="110"
-                HeightRequest="55"
+                WidthRequest="100"
+                HeightRequest="50"
                 HorizontalOptions="Center"
+                    Margin="0,5,0,10"
                 Clicked="OnShootClicked"/>
         </VerticalStackLayout>
     </Grid>
