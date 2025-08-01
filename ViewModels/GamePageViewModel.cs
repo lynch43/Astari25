@@ -16,6 +16,9 @@ namespace Astari25.ViewModels
         public IDrawable GameDrawable { get; }
 
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
+
+        public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
+
         public GamePageViewModel() {
             GameDrawable = new GameRenderer(Player, Bullets);
         }
@@ -24,9 +27,13 @@ namespace Astari25.ViewModels
             // go right slow
             //Player.X+=2;
 
-
+            // updat ethe collection
             foreach (var bullet in Bullets) {
                 bullet.Update();
+            }
+
+            foreach (var enemy in Enemies) {
+                enemy.Update();
             }
         }
     }
