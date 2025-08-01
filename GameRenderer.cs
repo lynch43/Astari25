@@ -39,14 +39,6 @@ namespace Astari25.Views {
                 canvas.FillCircle(enemy.X, enemy.Y, 30);
             }
 
-            if (_enemies != null)
-            {
-                canvas.FillColor = Colors.Red;
-                foreach (var enemy in _enemies)
-                {
-                    canvas.FillCircle(enemy.X, enemy.Y, 15);
-                }
-            }
         }
     }
 }
