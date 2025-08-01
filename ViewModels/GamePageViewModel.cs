@@ -35,6 +35,12 @@ namespace Astari25.ViewModels
             foreach (var enemy in Enemies) {
                 enemy.Update();
             }
+
+            // Spawns enemy randomly within the 60 frames so 4 seconds?
+            if (Random.Shared.Next(0, 60) == 0) {
+                float startX = Random.Shared.Next(50, 500); // give random X coordinate
+                Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
+            }
         }
     }
 
