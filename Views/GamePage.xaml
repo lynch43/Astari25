@@ -16,53 +16,51 @@
                   BackgroundColor="Black"/>
 
         
-        <VerticalStackLayout VerticalOptions="End"
+        <HorizontalStackLayout VerticalOptions="End"
                          HorizontalOptions="Center"
-                         Margin="0,0,0,20"
-                         Spacing="12">
+                         Margin="0,20,0,20"
+                         Spacing="18">
 
             <Grid RowDefinitions="Auto,Auto,Auto"
               ColumnDefinitions="Auto,Auto,Auto"
               VerticalOptions="End"
               HorizontalOptions="Center"
-              RowSpacing="8"
-              ColumnSpacing="8"
-              Margin="0,0,0,10">
+              RowSpacing="6"
+              ColumnSpacing="6">
 
                 <Button Text="↑"
                     Grid.Row="0" Grid.Column="1"
-                    FontSize="28"
-                    WidthRequest="60"
-                    HeightRequest="60"
+                    FontSize="26"
+                    WidthRequest="55"
+                    HeightRequest="55"
                     Clicked="OnUpClicked"/>
                 <Button Text="←"
                     Grid.Row="1" Grid.Column="0"
-                    FontSize="28"
-                    WidthRequest="60"
-                    HeightRequest="60"
+                    FontSize="26"
+                    WidthRequest="55"
+                    HeightRequest="55"
                     Clicked="OnLeftClicked"/>
                 <Button Text="→"
                     Grid.Row="1" Grid.Column="2"
-                    FontSize="28"
-                    WidthRequest="60"
-                    HeightRequest="60"
+                    FontSize="26"
+                    WidthRequest="55"
+                    HeightRequest="55"
                     Clicked="OnRightClicked"/>
                 <Button Text="↓"
                     Grid.Row="2" Grid.Column="1"
-                    FontSize="28"
-                    WidthRequest="60"
-                    HeightRequest="60"
+                    FontSize="26"
+                    WidthRequest="55"
+                    HeightRequest="55"
                     Clicked="OnDownClicked"/>
             </Grid>
 
             
             <Button Text="Shoot"
-                FontSize="24"
-                WidthRequest="100"
-                HeightRequest="50"
+                FontSize="20"
+                WidthRequest="110"
+                HeightRequest="70"
                 HorizontalOptions="Center"
-                    Margin="0,5,0,10"
                 Clicked="OnShootClicked"/>
-        </VerticalStackLayout>
+        </HorizontalStackLayout>
     </Grid>
 </ContentPage>
