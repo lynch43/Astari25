@@ -8,12 +8,15 @@ namespace Astari25.Views {
 
         
         private readonly Player _player;
+        
         private readonly ObservableCollection<Bullet> _bullets;
+        private readonly ObservableCollection<Enemy> _enemies;
 
         public GameRenderer(Player player, ObservableCollection<Bullet> bullets) {
 
             _player = player;
             _bullets = bullets;
+            _enemies = _enemies;
         }
 
         
@@ -29,6 +32,11 @@ namespace Astari25.Views {
             canvas.FillColor = Colors.Yellow;
             foreach (var bullet in _bullets) {
                 canvas.FillCircle(bullet.X, bullet.Y, 5);
+            }
+
+            canvas.FillColor = Colors.Red;
+            foreach (var enemy in _enemies) {
+                canvas.FillCircle(enemy.X, enemy.Y, 15);
             }
         }
     }
