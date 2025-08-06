@@ -3,17 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Astari25.ViewModels"
              x:Class="Astari25.Views.GamePage"
-             Title="*Astari*">
+             Title="*Astari*"
+             BackgroundColor="Black">
 
     <ContentPage.BindingContext>
         <vm:GamePageViewModel/>
     </ContentPage.BindingContext>
-    <Grid>
-        <Label Text="{Binding Player.Lives, StringFormat=Empty'Lives: {0}'}"
-               FontSize="20"
-               HorizontalOptions="Start"
-               Padding="10,0,0,5"
-               TextColor="White"/>
+    <VerticalStackLayout>
+
+        <HorizontalStackLayout Padding="10.5" Spacing="20">
+            <Label Text="{Binding Player.Lives, StringFormat='Lives: {0}'}"
+                   FontSize="20"
+                   TextColor="White"/>
+            <Label Text="{Binding Player.Score, StringFormat='Score: {0}'}"
+                   FontSize="20"
+                   TextColor="White"/>
+
+        </HorizontalStackLayout>
+        
+            
         <GraphicsView x:Name="GameCanvas"
                   Drawable="{Binding GameDrawable}"
                   HeightRequest="600"
@@ -67,5 +75,5 @@
                 HorizontalOptions="Center"
                 Clicked="OnShootClicked"/>
         </HorizontalStackLayout>
-    </Grid>
+    </VerticalStackLayout>
 </ContentPage>
