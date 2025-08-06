@@ -7,13 +7,13 @@ using Microsoft.Maui.Graphics;
 using Astari25.Views;
 using Astari25.Models;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 
 namespace Astari25.ViewModels
 {
     public class GamePageViewModel
     {
         public Player Player { get; } = new Player();
+        public int Score { get; set; } = 0;
         public IDrawable GameDrawable { get; }
 
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
@@ -28,10 +28,39 @@ namespace Astari25.ViewModels
             // go right slow
             //Player.X+=2;
 
-            // updat ethe collection
+            // update the collection
             foreach (var bullet in Bullets.ToList()) {
                 bullet.Update();
             }
+
+            // store bullets and enemies that need to be removed
+            var bulletsToRemove = new List<Bullet>();
+            var enemiesToRemove = new List<Enemy>();
+
+            foreach (var bullet in Bullets) {
+
+                
+                    foreach (var enemy in Enemies) {
+                        if (IsColliding(bullet.X, bullet.Y, 5, enemy.X, enemy.Y, enemy.Radius)) {
+                            bulletsToRemove.Add(bullet);
+                            enemiesToRemove.Add(enemy);
+
+                            Score += 10; // every hit amend the score on xaml
+                            Console.WriteLine($"Got on. Score: {Score}");
+                            break;
+                        }
+                    }
+
+            }
+
+            foreach (var bullet in bulletsToRemove) {
+                Bullets.Remove(bullet);
+            }
+
+            foreach (var enemy in enemiesToRemove) {
+                Enemies.Remove(enemy);
+            }
+
 
             foreach (var enemy in Enemies.ToList()) {
                 enemy.Update();
