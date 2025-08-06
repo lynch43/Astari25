@@ -43,7 +43,7 @@ namespace Astari25.ViewModels
                     float dy = bullet.Y - enemy.Y;
                     float distance = (float)Math.Sqrt(dx * dx + dy * dy);
 
-                    if (distance < 15) // destrooy when they overlap
+                    if (distance < enemy.Radius + Player.Radius) // destrooy when they overlap
                     {
                         Enemies.Remove(enemy);
                         Bullets.Remove(bullet);
@@ -57,7 +57,7 @@ namespace Astari25.ViewModels
                 float startX = Random.Shared.Next(50, 600); // give random X coordinate
                 Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
 
-                Console.WriteLine($"bad guy spawned at coord={startX}");
+                Console.WriteLine($"bad guy spawned at coord={startX}"); // remove console line before sumission
             }
         }
     }

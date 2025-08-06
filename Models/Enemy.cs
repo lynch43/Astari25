@@ -12,6 +12,8 @@ namespace Astari25.Models
         public float Y { get; set; }
         public float Speed { get; set; } = 1;
 
+        public float Radius { get; set; } = 20;
+
         public Enemy(float startX, float startY) {
             X = startX;
             Y = startY;
