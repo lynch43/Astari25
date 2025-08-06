@@ -19,6 +19,8 @@ namespace Astari25.ViewModels
             GameDrawable = new GameRenderer(Player, Bullets, Enemies);
         }
 
+        public bool IsGameOver { get; set; } = false;
+
         // Need the event listener and method to handle it
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -41,6 +43,12 @@ namespace Astari25.ViewModels
         }
 
         public void Update() {
+
+            if ( Player.Lives <= 0)
+            {
+                IsGameOver = true;
+                Console.WriteLine("You ran out of lives");
+            }
             // go right slow
             //Player.X+=2;
 
