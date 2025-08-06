@@ -45,8 +45,16 @@ namespace Astari25.ViewModels
 
                     if (distance < enemy.Radius + Player.Radius) // destrooy when they overlap
                     {
+                        Console.WriteLine("Player hit, lose a life");
+                        Player.Lives--;
+
                         Enemies.Remove(enemy);
                         Bullets.Remove(bullet);
+
+                        if (Player.Lives <= 0) {
+                            Console.WriteLine("Out of lives");
+                            // have to add some more stuff here. game reset. message to player
+                        }
                     }
                 }
             

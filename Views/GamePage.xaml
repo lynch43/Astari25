@@ -9,6 +9,11 @@
         <vm:GamePageViewModel/>
     </ContentPage.BindingContext>
     <Grid>
+        <Label Text="{Binding Player.Lives, StringFormat=Empty'Lives: {0}'}"
+               FontSize="20"
+               HorizontalOptions="Start"
+               Padding="10,0,0,5"
+               TextColor="White"/>
         <GraphicsView x:Name="GameCanvas"
                   Drawable="{Binding GameDrawable}"
                   HeightRequest="600"

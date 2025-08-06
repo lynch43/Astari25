@@ -12,5 +12,7 @@ namespace Astari25.Models
         public float X { get; set; } = 300;
         public float Y { get; set; } = 300;
         public float Radius { get; set; } = 20;
+
+        public int Lives { get; set; } = 3;
     }
 }
