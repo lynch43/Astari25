@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Graphics;
-using Astari25.Models;
+﻿using Astari25.Models;
 using System.Collections.ObjectModel;
 
 namespace Astari25.Views { 
