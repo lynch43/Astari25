@@ -1,13 +1,14 @@
 ﻿using Astari25.Views;
 using Astari25.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Astari25.ViewModels
 {
-    public class GamePageViewModel
+    public class GamePageViewModel : INotifyPropertyChanged
     {
         public Player Player { get; } = new Player();
-        public int Score { get; set; } = 0;
         public IDrawable GameDrawable { get; }
 
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
@@ -16,6 +17,27 @@ namespace Astari25.ViewModels
 
         public GamePageViewModel() {
             GameDrawable = new GameRenderer(Player, Bullets, Enemies);
+        }
+
+        // Need the event listener and method to handle it
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        private int _score;
+        public int Score {
+            get => _score;
+            set {
+                if (_score != value) {
+
+                    _score = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public void Update() {
