@@ -25,11 +25,9 @@ public partial class GamePage : ContentPage
 
     private async void OnGameLoop(object sender, ElapsedEventArgs e)
     {
-        // Off the UI thread - do heavy lifting here
         _viewModel.Update();
 
-        // Now go to UI thread only for drawing and alerts
-        await MainThread.InvokeOnMainThreadAsync(async () =>
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
             GameCanvas.Invalidate();
 
@@ -47,6 +45,15 @@ public partial class GamePage : ContentPage
                 }
             }
         });
+    }
+
+
+    // Stop any timers from ticking after game closes
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _gameTimer?.Stop();
+        _gameTimer?.Dispose();
     }
 
     private void OnUpClicked(object sender, EventArgs e) => _viewModel.Player.Y -= 10;
