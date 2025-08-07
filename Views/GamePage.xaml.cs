@@ -31,9 +31,13 @@ public partial class GamePage : ContentPage
     // It updates the game logic and redraws the screen
     private void OnGameLoop(object sender, ElapsedEventArgs e)
     {
+
+        _viewModel.Update();
+
+
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            _viewModel.Update();
+            
             GameCanvas.Invalidate();
 
             if (_viewModel.IsGameOver)

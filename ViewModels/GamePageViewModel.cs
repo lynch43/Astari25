@@ -103,7 +103,6 @@ namespace Astari25.ViewModels
                         Player.Lives--;
 
                         Enemies.Remove(enemy);
-                        Bullets.Remove(bullet);
 
                         if (Player.Lives <= 0) {
                             Console.WriteLine("Out of lives");
