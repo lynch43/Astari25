@@ -90,28 +90,43 @@ namespace Astari25.ViewModels
                 enemy.Update();
             }
 
-            foreach (var bullet in Bullets.ToList()) {
+            // lose a life if things get to the astari base
+            foreach (var enemy in Enemies.ToList()) {
+                if (enemy.Y > Player.Y + Player.Radius + 10) // adjust tolerance if needed
+                {
+                    Console.WriteLine("Enemy escaped! Lose a life.");
+                    Player.Lives--;
+                    Enemies.Remove(enemy);
 
-                foreach (var enemy in Enemies.ToList()) {
-                    float dx = bullet.X - enemy.X;
-                    float dy = bullet.Y - enemy.Y;
-                    float distance = (float)Math.Sqrt(dx * dx + dy * dy);
-
-                    if (distance < enemy.Radius + Player.Radius) // destrooy when they overlap
+                    if (Player.Lives <= 0)
                     {
-                        Console.WriteLine("Player hit, lose a life");
-                        Player.Lives--;
-
-                        Enemies.Remove(enemy);
-
-                        if (Player.Lives <= 0) {
-                            Console.WriteLine("Out of lives");
-                            IsGameOver = true;
-                        }
+                        Console.WriteLine("Out of lives");
+                        IsGameOver = true;
                     }
                 }
-            
             }
+
+            foreach (var enemy in Enemies.ToList())
+            {
+                float dx = Player.X - enemy.X;
+                float dy = Player.Y - enemy.Y;
+                float distance = (float)Math.Sqrt(dx * dx + dy * dy);
+
+                if (distance < enemy.Radius + Player.Radius)
+                {
+                    Console.WriteLine("Player hit, lose a life");
+                    Player.Lives--;
+
+                    Enemies.Remove(enemy);
+
+                    if (Player.Lives <= 0)
+                    {
+                        Console.WriteLine("Out of lives");
+                        IsGameOver = true;
+                    }
+                }
+            }
+
 
             // Spawns enemy randomly within the 60 frames so 4 seconds?
             if (Random.Shared.Next(0, 120) == 0) {

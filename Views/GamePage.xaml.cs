@@ -18,7 +18,7 @@ public partial class GamePage : ContentPage
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        _gameTimer = new System.Timers.Timer(33); // ~30 FPS
+        _gameTimer = new System.Timers.Timer(16); // back to 60fps
         _gameTimer.Elapsed += OnGameLoop;
         _gameTimer.Start();
     }
