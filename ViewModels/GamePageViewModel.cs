@@ -125,6 +125,18 @@ namespace Astari25.ViewModels
             
         }
 
+        public void Reset() {
+
+            Score = 0;
+            Player.Lives = 3;
+            Player.X = 300;
+            Player.Y = 500;
+
+            Bullets.Clear();
+            Enemies.Clear();
+            IsGameOver = false;
+        }
+
         private bool IsColliding(float x1, float y1, float r1, float x2, float y2, float r2)
         {
             float dx = x1 - x2;
