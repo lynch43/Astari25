@@ -47,7 +47,7 @@ namespace Astari25.ViewModels
             if ( Player.Lives <= 0)
             {
                 IsGameOver = true;
-                Console.WriteLine("You ran out of lives");
+                //Console.WriteLine("You ran out of lives");
             }
             // go right slow
             //Player.X+=2;
@@ -98,11 +98,6 @@ namespace Astari25.ViewModels
                     Player.Lives--;
                     Enemies.Remove(enemy);
 
-                    if (Player.Lives <= 0)
-                    {
-                        Console.WriteLine("Out of lives");
-                        IsGameOver = true;
-                    }
                 }
             }
 
@@ -114,16 +109,11 @@ namespace Astari25.ViewModels
 
                 if (distance < enemy.Radius + Player.Radius)
                 {
-                    Console.WriteLine("Player hit, lose a life");
+                    //Console.WriteLine("Player hit, lose a life");
                     Player.Lives--;
 
                     Enemies.Remove(enemy);
 
-                    if (Player.Lives <= 0)
-                    {
-                        Console.WriteLine("Out of lives");
-                        IsGameOver = true;
-                    }
                 }
             }
 
@@ -133,10 +123,16 @@ namespace Astari25.ViewModels
                 float startX = Random.Shared.Next(50, 600); // give random X coordinate
                 Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
 
-                Console.WriteLine($"bad guy spawned at coord={startX}"); // remove console line before sumission
+                //Console.WriteLine($"bad guy spawned at coord={startX}"); // remove console line before sumission
             }
 
-            
+            if (Player.Lives <= 0)
+            {
+                //Console.WriteLine("Out of lives");
+                IsGameOver = true;
+            }
+
+
         }
 
         public void Reset() {
