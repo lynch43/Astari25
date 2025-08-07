@@ -107,7 +107,7 @@ namespace Astari25.ViewModels
 
                         if (Player.Lives <= 0) {
                             Console.WriteLine("Out of lives");
-                            // have to add some more stuff here. game reset. message to player
+                            IsGameOver = true;
                         }
                     }
                 }
@@ -134,6 +134,7 @@ namespace Astari25.ViewModels
 
             Bullets.Clear();
             Enemies.Clear();
+
             IsGameOver = false;
         }
 
