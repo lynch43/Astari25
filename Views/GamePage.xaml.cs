@@ -4,78 +4,56 @@ using System.Timers;
 
 namespace Astari25.Views;
 
-// Main game screen
 public partial class GamePage : ContentPage
 {
     private readonly GamePageViewModel _viewModel;
-
-    // Game Loop that runs 60 times a second
     private readonly System.Timers.Timer _gameTimer;
+    private bool _popupShown = false;
 
     public GamePage()
     {
         InitializeComponent();
 
-        // Setup the ViewModel and binding for graphics
         _viewModel = new GamePageViewModel();
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        // Setup game loop with System.Timers.Timer (60 FPS)
-        _gameTimer = new System.Timers.Timer(16);
+        _gameTimer = new System.Timers.Timer(33); // ~30 FPS
         _gameTimer.Elapsed += OnGameLoop;
         _gameTimer.Start();
     }
 
-    // This runs every frame (60 per second)
-    // It updates the game logic and redraws the screen
-    private void OnGameLoop(object sender, ElapsedEventArgs e)
+    private async void OnGameLoop(object sender, ElapsedEventArgs e)
     {
-        // take outside main thread because everything is bufferring
+        // Off the UI thread - do heavy lifting here
         _viewModel.Update();
 
-
-        MainThread.BeginInvokeOnMainThread(async () =>
+        // Now go to UI thread only for drawing and alerts
+        await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            // keep this in though because it is UI
-            GameCanvas.Invalidate(); 
+            GameCanvas.Invalidate();
 
-            if (_viewModel.IsGameOver)
+            if (_viewModel.IsGameOver && !_popupShown)
             {
+                _popupShown = true;
                 _gameTimer.Stop();
 
-                bool result = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart","Cancel");
+                bool result = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Cancel");
                 if (result)
                 {
-                    // restart the game on same screen
-                    _viewModel.Reset(); 
+                    _viewModel.Reset();
+                    _popupShown = false;
                     _gameTimer.Start();
                 }
             }
         });
     }
 
-    private void OnUpClicked(object sender, EventArgs e)
-    {
-        _viewModel.Player.Y -= 10;
-    }
+    private void OnUpClicked(object sender, EventArgs e) => _viewModel.Player.Y -= 10;
+    private void OnDownClicked(object sender, EventArgs e) => _viewModel.Player.Y += 10;
+    private void OnLeftClicked(object sender, EventArgs e) => _viewModel.Player.X -= 10;
+    private void OnRightClicked(object sender, EventArgs e) => _viewModel.Player.X += 10;
 
-    private void OnDownClicked(object sender, EventArgs e)
-    {
-        _viewModel.Player.Y += 10;
-    }
-
-    private void OnLeftClicked(object sender, EventArgs e)
-    {
-        _viewModel.Player.X -= 10;
-    }
-
-    private void OnRightClicked(object sender, EventArgs e)
-    {
-        _viewModel.Player.X += 10;
-    }
-
-    // Pew (fire a single bullet)
     private void OnShootClicked(object sender, EventArgs e)
     {
         var bullet = new Bullet(_viewModel.Player.X, _viewModel.Player.Y);
