@@ -31,14 +31,14 @@ public partial class GamePage : ContentPage
     // It updates the game logic and redraws the screen
     private void OnGameLoop(object sender, ElapsedEventArgs e)
     {
-
+        // take outside main thread because everything is bufferring
         _viewModel.Update();
 
 
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            
-            GameCanvas.Invalidate();
+            // keep this in though because it is UI
+            GameCanvas.Invalidate(); 
 
             if (_viewModel.IsGameOver)
             {
