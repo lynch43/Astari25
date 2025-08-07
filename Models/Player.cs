@@ -32,6 +32,16 @@ namespace Astari25.Models
             }
         }
 
+        public void Reset() {
+
+            X = 300;
+            Y = 550;
+            Lives = 3;
+            Score = 0;
+            OnPropertyChanged(nameof(Lives)); // might remove
+            OnPropertyChanged(nameof(Score)); // might remove dunno if this is needed
+        }
+
         public float X { get; set; } = 300;
         public float Y { get; set; } = 550;
         public float Radius { get; set; } = 20;
