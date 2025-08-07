@@ -156,7 +156,7 @@ namespace Astari25.ViewModels
         {
             float dx = x1 - x2;
             float dy = y1 - y2;
-            float distanceSquared = dx * dx * dy * dy;
+            float distanceSquared = dx * dx + dy * dy;
             float radiusSum = r1 + r2;
 
             return distanceSquared <= radiusSum * radiusSum;
