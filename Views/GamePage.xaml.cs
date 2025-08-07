@@ -43,7 +43,9 @@ public partial class GamePage : ContentPage
                 bool result = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart","Cancel");
                 if (result)
                 {
-                    await Navigation.PopToRootAsync(); // Back to StartPage
+                    // restart the game on same screen
+                    _viewModel.Reset(); 
+                    _gameTimer.Start();
                 }
             }
         });
