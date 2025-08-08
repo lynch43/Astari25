@@ -123,11 +123,18 @@ namespace Astari25.ViewModels
 
 
             // TODO. Enemies spawning at random. game is getting overwhelmed and stutterring
-            if (Random.Shared.Next(0, 120) == 0) {
-                float startX = Random.Shared.Next(50, 600); // give random X coordinate
-                Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
+            // SPAWN LOGIC
+            _framesInBetweenSpawns++;
 
-                //Console.WriteLine($"bad guy spawned at coord={startX}"); // remove console line before sumission
+            if (_framesInBetweenSpawns >= FramesPerSpawn) {
+
+                _framesInBetweenSpawns = 0;
+
+                float padding = 20f;
+                float canvasWidth = 500f;
+                float startX = Random.Shared.NextSingle() * canvasWidth;
+
+                Enemies.Add(new Enemy(startX, 0));
             }
 
             if (Player.Lives <= 0)
