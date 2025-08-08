@@ -50,7 +50,14 @@ public partial class GamePage : ContentPage
                     _gameTimer.Start();
                 }
                 else {
-                    await Shell.Current.GoToAsync("///StartPage");
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        _gameTimer.Stop();
+                        
+
+                    });
+
+                    await Shell.Current.GoToAsync("StartPage");
                 }
             }
         });

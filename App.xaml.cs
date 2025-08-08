@@ -7,8 +7,8 @@ public partial class App : Application
 	public App()
 	{
 		InitializeComponent();
-		// NavigationPage is there for .PushAsync()
-		MainPage = new NavigationPage(new StartPage());
+		// Need to switch this now to use GoToAsync
+		MainPage = new AppShell();
 	}
 
 }
