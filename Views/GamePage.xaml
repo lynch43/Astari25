@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Astari25.ViewModels"
              x:Class="Astari25.Views.GamePage"
-             Title="*Astari*"
+             
              BackgroundColor="Black">
 
     <ContentPage.BindingContext>
