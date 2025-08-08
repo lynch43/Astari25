@@ -32,6 +32,8 @@ namespace Astari25.Models
             }
         }
 
+        public float HorizontalSpeed { get; set; } = 0;
+
         public void Reset() {
 
             X = 300;

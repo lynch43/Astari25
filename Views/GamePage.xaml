@@ -9,71 +9,60 @@
     <ContentPage.BindingContext>
         <vm:GamePageViewModel/>
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
 
-        <HorizontalStackLayout Padding="10.5" Spacing="20">
-            <Label Text="{Binding Player.Lives, StringFormat='Lives: {0}'}"
+    <VerticalStackLayout Padding="10" Spacing="10">
+
+        <!-- Title -->
+        <Label Text="ASTARI"
+               FontSize="36"
+               HorizontalOptions="Center"
+               TextColor="White"/>
+
+        <!-- Lives and Score -->
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+            <Label Text="Lives:"
                    FontSize="20"
                    TextColor="White"/>
-            <Label Text="{Binding Player.Score, StringFormat='Score: {0}'}"
+            <Label Text="{Binding Player.Lives}"
                    FontSize="20"
                    TextColor="White"/>
-
+            <Label Text="Score:"
+                   FontSize="20"
+                   TextColor="White"/>
+            <Label Text="{Binding Player.Score}"
+                   FontSize="20"
+                   TextColor="White"/>
         </HorizontalStackLayout>
-        
-            
-        <GraphicsView x:Name="GameCanvas"
-                  Drawable="{Binding GameDrawable}"
-                  HeightRequest="600"
-                  WidthRequest="600"
-                  BackgroundColor="Black"/>
 
-        
-        <HorizontalStackLayout VerticalOptions="End"
-                         HorizontalOptions="Center"
-                         Margin="0,20,0,20"
-                         Spacing="18">
+        <!-- Game Canvas -->
+        <Frame BorderColor="White" Padding="0" HasShadow="False">
+            <GraphicsView x:Name="GameCanvas"
+                          Drawable="{Binding GameDrawable}"
+                          HeightRequest="600"
+                          WidthRequest="600"
+                          BackgroundColor="Black"/>
+        </Frame>
 
-            <Grid RowDefinitions="Auto,Auto,Auto"
-              ColumnDefinitions="Auto,Auto,Auto"
-              VerticalOptions="End"
-              HorizontalOptions="Center"
-              RowSpacing="6"
-              ColumnSpacing="6">
+        <!-- Slider Controls (Android Only) -->
+        <VerticalStackLayout>
+            <Label Text="Move Player"
+                   HorizontalOptions="Center"
+                   TextColor="White"/>
+            <Slider x:Name="MoveSlider"
+                    Minimum="-1"
+                    Maximum="1"
+                    ValueChanged="OnSliderValueChanged"
+                    ThumbColor="White"
+                    MaximumTrackColor="Gray"
+                    MinimumTrackColor="Gray"/>
+        </VerticalStackLayout>
 
-                <Button Text="↑"
-                    Grid.Row="0" Grid.Column="1"
-                    FontSize="26"
-                    WidthRequest="55"
-                    HeightRequest="55"
-                    Clicked="OnUpClicked"/>
-                <Button Text="←"
-                    Grid.Row="1" Grid.Column="0"
-                    FontSize="26"
-                    WidthRequest="55"
-                    HeightRequest="55"
-                    Clicked="OnLeftClicked"/>
-                <Button Text="→"
-                    Grid.Row="1" Grid.Column="2"
-                    FontSize="26"
-                    WidthRequest="55"
-                    HeightRequest="55"
-                    Clicked="OnRightClicked"/>
-                <Button Text="↓"
-                    Grid.Row="2" Grid.Column="1"
-                    FontSize="26"
-                    WidthRequest="55"
-                    HeightRequest="55"
-                    Clicked="OnDownClicked"/>
-            </Grid>
-
-            
-            <Button Text="Shoot"
+        <!-- Shoot Button -->
+        <Button Text="Shoot"
                 FontSize="20"
-                WidthRequest="110"
-                HeightRequest="70"
+                HeightRequest="50"
                 HorizontalOptions="Center"
                 Clicked="OnShootClicked"/>
-        </HorizontalStackLayout>
+
     </VerticalStackLayout>
 </ContentPage>
