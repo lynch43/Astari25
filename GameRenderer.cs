@@ -29,12 +29,12 @@ namespace Astari25.Views {
             canvas.DrawCircle(_player.X, _player.Y, _player.Radius);
 
             canvas.FillColor = Colors.Yellow;
-            foreach (var bullet in _bullets) {
+            foreach (var bullet in _bullets.ToList()) {
                 canvas.FillCircle(bullet.X, bullet.Y, 5);
             }
 
             canvas.FillColor = Colors.Red;
-            foreach (var enemy in _enemies) {
+            foreach (var enemy in _enemies.ToList()) {
                 canvas.FillCircle(enemy.X, enemy.Y, 12);
             }
 
