@@ -65,6 +65,7 @@ public partial class GamePage : ContentPage
         _gameTimer?.Dispose();
     }
 
+    
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
         _viewModel.Player.HorizontalSpeed = (float)e.NewValue * 5f;

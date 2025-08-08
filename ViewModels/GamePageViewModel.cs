@@ -71,6 +71,10 @@ namespace Astari25.ViewModels
             // Link the slider movement from GPxaml
             Player.X += Player.HorizontalSpeed;
 
+            // Stop the slider from sending Player off screen
+            Player.X = Math.Clamp(Player.X, Player.Radius, CanvasWidth - Player.Radius);
+
+
             foreach (var bullet in Bullets) {
 
                 
