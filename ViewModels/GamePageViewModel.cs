@@ -11,6 +11,10 @@ namespace Astari25.ViewModels
         public Player Player { get; } = new Player();
         public IDrawable GameDrawable { get; }
 
+        // Spawning fields
+        private int _framesInBetweenSpawns = 0;
+        private const int FramesPerSpawn = 60;
+
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
 
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
@@ -118,7 +122,7 @@ namespace Astari25.ViewModels
             }
 
 
-            // Spawns enemy randomly within the 60 frames so 4 seconds?
+            // TODO. Enemies spawning at random. game is getting overwhelmed and stutterring
             if (Random.Shared.Next(0, 120) == 0) {
                 float startX = Random.Shared.Next(50, 600); // give random X coordinate
                 Enemies.Add(new Enemy(startX, 0)); // 0 is top of screen so spawn at top
