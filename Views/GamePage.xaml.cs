@@ -18,6 +18,8 @@ public partial class GamePage : ContentPage
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
+        GameCanvas.SizeChanged += OnCanvasSizeChanged;
+
         _gameTimer = new System.Timers.Timer(16); // back to 60fps
         _gameTimer.Elapsed += OnGameLoop;
         _gameTimer.Start();
@@ -45,6 +47,13 @@ public partial class GamePage : ContentPage
                 }
             }
         });
+    }
+
+    // Change canvas size
+    
+
+    private void OnCanvasSizeChanged(object sender, EventArgs e) {
+        _viewModel.CanvasWidth = (float)GameCanvas.Width;
     }
 
 

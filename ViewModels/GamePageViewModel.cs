@@ -15,6 +15,10 @@ namespace Astari25.ViewModels
         private int _framesInBetweenSpawns = 0;
         private const int FramesPerSpawn = 120;
 
+        // Default Width for spawning probably not gonna work on windows. dont care for now
+        public float CanvasWidth { get; set; } = 500f;
+
+
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
 
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
