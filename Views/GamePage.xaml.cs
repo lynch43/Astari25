@@ -42,12 +42,15 @@ public partial class GamePage : ContentPage
                 _popupShown = true;
                 _gameTimer.Stop();
 
-                bool result = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Cancel");
+                bool result = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Main Menu");
                 if (result)
                 {
                     _viewModel.Reset();
                     _popupShown = false;
                     _gameTimer.Start();
+                }
+                else {
+                    await Shell.Current.GoToAsync("///StartPage");
                 }
             }
         });
