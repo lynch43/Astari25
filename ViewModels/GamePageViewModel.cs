@@ -18,7 +18,6 @@ namespace Astari25.ViewModels
         // Default Width for spawning probably not gonna work on windows. dont care for now
         public float CanvasWidth { get; set; } = 500f;
 
-
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
 
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
@@ -140,10 +139,13 @@ namespace Astari25.ViewModels
                 _framesInBetweenSpawns = 0;
 
                 float padding = 20f;
-                float screenSize = CanvasWidth - 2 * padding;
-                float startX = Random.Shared.NextSingle() * (screenSize + padding);
+                float screenSize = Math.Max(CanvasWidth - 2 * padding, 0);
+                if (screenSize > 0) {
+                    float startX = Random.Shared.NextSingle() * (screenSize + padding);
 
-                Enemies.Add(new Enemy(startX, 0));
+                    Enemies.Add(new Enemy(startX, 0));
+                }
+                    
             }
 
             if (Player.Lives <= 0)
