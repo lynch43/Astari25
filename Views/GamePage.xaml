@@ -14,55 +14,56 @@
 
         <!-- Title -->
         <Label Text="ASTARI"
-               FontSize="36"
+               FontSize="38"
                HorizontalOptions="Center"
                TextColor="White"/>
 
         <!-- Lives and Score -->
-        <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
             <Label Text="Lives:"
-                   FontSize="20"
+                   FontSize="30"
                    TextColor="White"/>
             <Label Text="{Binding Player.Lives}"
-                   FontSize="20"
+                   FontSize="30"
                    TextColor="White"/>
             <Label Text="Score:"
-                   FontSize="20"
+                   FontSize="30"
                    TextColor="White"/>
             <Label Text="{Binding Player.Score}"
-                   FontSize="20"
+                   FontSize="30"
                    TextColor="White"/>
         </HorizontalStackLayout>
 
         <!-- Game Canvas -->
-        <Frame BorderColor="White" Padding="0" HasShadow="False">
+        <Grid HorizontalOptions="Center"
+              VerticalOptions="Center">
             <GraphicsView x:Name="GameCanvas"
-                          Drawable="{Binding GameDrawable}"
-                          HeightRequest="600"
-                          WidthRequest="600"
-                          BackgroundColor="Black"/>
-        </Frame>
+                  Drawable="{Binding GameDrawable}"
+                  WidthRequest="600"
+                  HeightRequest="550"
+                  BackgroundColor="Black"/>
+        </Grid>
 
-        <!-- Slider Controls (Android Only) -->
-        <VerticalStackLayout>
-            <Label Text="Move Player"
-                   HorizontalOptions="Center"
-                   TextColor="White"/>
+
+        <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
+            <!-- Vertical Slider on the left -->
             <Slider x:Name="MoveSlider"
-                    Minimum="-1"
-                    Maximum="1"
-                    ValueChanged="OnSliderValueChanged"
-                    ThumbColor="White"
-                    MaximumTrackColor="Gray"
-                    MinimumTrackColor="Gray"/>
-        </VerticalStackLayout>
+            Minimum="-1"
+            Maximum="1"
+            HeightRequest="70"
+            WidthRequest="230"
+            ValueChanged="OnSliderValueChanged"
+            ThumbColor="White"
+            MaximumTrackColor="Gray"
+            MinimumTrackColor="Gray" />
 
-        <!-- Shoot Button -->
-        <Button Text="Shoot"
-                FontSize="20"
-                HeightRequest="50"
-                HorizontalOptions="Center"
-                Clicked="OnShootClicked"/>
+            <!-- Shoot Button on the right -->
+            <Button Text="Pew"
+            FontSize="19"
+            HeightRequest="60"
+            WidthRequest="80"
+            Clicked="OnShootClicked"/>
+        </HorizontalStackLayout>
 
     </VerticalStackLayout>
 </ContentPage>
