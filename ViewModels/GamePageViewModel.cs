@@ -68,6 +68,9 @@ namespace Astari25.ViewModels
             var bulletsToRemove = new List<Bullet>();
             var enemiesToRemove = new List<Enemy>();
 
+            // Link the slider movement from GPxaml
+            Player.X += Player.HorizontalSpeed;
+
             foreach (var bullet in Bullets) {
 
                 
