@@ -50,6 +50,8 @@
             <Slider x:Name="MoveSlider"
             Minimum="-1"
             Maximum="1"
+            Value="0"
+            DragCompleted="OnSliderReleased"
             HeightRequest="70"
             WidthRequest="230"
             ValueChanged="OnSliderValueChanged"
