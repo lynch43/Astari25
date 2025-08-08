@@ -33,6 +33,9 @@ namespace Astari25.Views {
 
             canvas.StrokeColor = Colors.Purple;
             canvas.StrokeSize = 2;
+            //canvas.DrawCircle(_player.X, _player.Y, _player.Radius);
+
+            float clampedX = Math.Clamp(_player.X, _player.Radius, dirtyRect.Width - _player.Radius);
             canvas.DrawCircle(_player.X, _player.Y, _player.Radius);
 
             canvas.FillColor = Colors.Yellow;

@@ -149,16 +149,15 @@ namespace Astari25.ViewModels
                 _framesInBetweenSpawns = 0;
 
                 float padding = 30f;
-                float minX = padding;
-                float maxX = CanvasWidth - padding;
+                float canvasWidth = CanvasWidth;
 
-                if (maxX > minX)
+                if (canvasWidth > padding * 2)
                 {
-                    float startX = Random.Shared.NextSingle() * (maxX - minX) + minX;
+                    float startX = Random.Shared.NextSingle() * (canvasWidth - 2 * padding) + padding;
                     Enemies.Add(new Enemy(startX, 0));
                 }
 
-                Console.WriteLine($"CHECK CHECK CHECK minX: {minX}, maxX: {maxX}");
+                //Console.WriteLine($"CHECK CHECK CHECK minX: {minX}, maxX: {maxX}");
             }
 
             if (Player.Lives <= 0)
