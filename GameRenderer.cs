@@ -21,41 +21,41 @@ namespace Astari25.Views {
             _getCanvasWidth = getCanvasWidth ?? throw new ArgumentNullException(nameof(getCanvasWidth));
         }
 
-        
-        
+
+
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-
-            var canvasWidth = _getCanvasWidth();
-
             canvas.FillColor = Colors.Black;
             canvas.FillRectangle(dirtyRect); // Clear background
 
-            canvas.StrokeColor = Colors.Purple;
+            
+            float padding = 20f;
+            float left = padding;
+            float top = padding;
+            float right = _getCanvasWidth() - padding;
+            float bottom = dirtyRect.Height - padding;
+
+            canvas.StrokeColor = Colors.White;
             canvas.StrokeSize = 2;
-            //canvas.DrawCircle(_player.X, _player.Y, _player.Radius);
+            canvas.DrawRectangle(left, top, right - left, bottom - top);
 
-            float clampedX = Math.Clamp(_player.X, _player.Radius, dirtyRect.Width - _player.Radius);
-            canvas.DrawCircle(_player.X, _player.Y, _player.Radius);
+            // ME
+            canvas.FillColor = Colors.White;
+            canvas.FillCircle(_player.X, _player.Y, _player.Radius);
 
+            // PEW
             canvas.FillColor = Colors.Yellow;
-            foreach (var bullet in _bullets.ToList()) {
+            foreach (var bullet in _bullets.ToList())
+            {
                 canvas.FillCircle(bullet.X, bullet.Y, 5);
             }
 
-            canvas.StrokeColor = Colors.DarkRed;
-            canvas.StrokeSize = 1;
-            foreach (var enemy in _enemies.ToList()) {
-                canvas.FillColor = Colors.Red;
+            // Bad guy
+            canvas.FillColor = Colors.Red;
+            foreach (var enemy in _enemies.ToList())
+            {
                 canvas.FillCircle(enemy.X, enemy.Y, 12);
-                canvas.DrawCircle(enemy.X, enemy.Y, 12);
             }
-
-            float r = 30f;
-            //Console.WriteLine($"CANVAS SIZE: {dirtyRect.Width} x {dirtyRect.Height}");
-            canvas.StrokeColor = Colors.DarkCyan;
-            canvas.DrawRectangle(r, 0, canvasWidth - 2 * r, dirtyRect.Height);
-
         }
     }
 }
