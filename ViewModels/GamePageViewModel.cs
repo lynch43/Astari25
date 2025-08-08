@@ -23,7 +23,7 @@ namespace Astari25.ViewModels
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
 
         public GamePageViewModel() {
-            GameDrawable = new GameRenderer(Player, Bullets, Enemies);
+            GameDrawable = new GameRenderer(Player, Bullets, Enemies, () => CanvasWidth);
         }
 
         public bool IsGameOver { get; set; } = false;
@@ -75,7 +75,7 @@ namespace Astari25.ViewModels
 
             // Link the slider movement from GPxaml
             Player.X += Player.HorizontalSpeed;
-            ClampPlayerToCanvas();
+            
 
 
             foreach (var bullet in Bullets) {
@@ -148,7 +148,7 @@ namespace Astari25.ViewModels
             {
                 _framesInBetweenSpawns = 0;
 
-                float padding = 20f;
+                float padding = 30f;
                 float minX = padding;
                 float maxX = CanvasWidth - padding;
 
@@ -157,12 +157,16 @@ namespace Astari25.ViewModels
                     float startX = Random.Shared.NextSingle() * (maxX - minX) + minX;
                     Enemies.Add(new Enemy(startX, 0));
                 }
+
+                Console.WriteLine($"CHECK CHECK CHECK minX: {minX}, maxX: {maxX}");
             }
 
             if (Player.Lives <= 0)
             {
                 IsGameOver = true;
             }
+
+            ClampPlayerToCanvas();
 
 
         }
