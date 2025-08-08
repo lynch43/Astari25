@@ -71,9 +71,6 @@ namespace Astari25.ViewModels
             // Link the slider movement from GPxaml
             Player.X += Player.HorizontalSpeed;
 
-            // Stop the slider from sending Player off screen
-            Player.X = Math.Clamp(Player.X, Player.Radius, CanvasWidth - Player.Radius);
-
 
             foreach (var bullet in Bullets) {
 
@@ -177,6 +174,12 @@ namespace Astari25.ViewModels
             IsGameOver = false;
         }
 
+        // Stop the slider from sending Player off screen
+        public void ClampPlayerToCanvas()
+        {
+            Player.X = Math.Clamp(Player.X, Player.Radius, CanvasWidth - Player.Radius);
+        }
+
         private bool IsColliding(float x1, float y1, float r1, float x2, float y2, float r2)
         {
             float dx = x1 - x2;
@@ -187,6 +190,8 @@ namespace Astari25.ViewModels
             return distanceSquared <= radiusSum * radiusSum;
 
         }
+
+        
 
 
     }

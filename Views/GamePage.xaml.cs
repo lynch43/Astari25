@@ -14,11 +14,12 @@ public partial class GamePage : ContentPage
     {
         InitializeComponent();
 
+        GameCanvas.SizeChanged += OnCanvasSizeChanged;
+
         _viewModel = new GamePageViewModel();
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        GameCanvas.SizeChanged += OnCanvasSizeChanged;
 
         _gameTimer = new System.Timers.Timer(16); // back to 60fps
         _gameTimer.Elapsed += OnGameLoop;
@@ -54,6 +55,10 @@ public partial class GamePage : ContentPage
 
     private void OnCanvasSizeChanged(object sender, EventArgs e) {
         _viewModel.CanvasWidth = (float)GameCanvas.Width;
+
+
+        // debug
+        Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
     }
 
 
@@ -69,12 +74,24 @@ public partial class GamePage : ContentPage
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
         _viewModel.Player.HorizontalSpeed = (float)e.NewValue * 5f;
+
     }
 
-    private void OnUpClicked(object sender, EventArgs e) => _viewModel.Player.Y -= 10;
-    private void OnDownClicked(object sender, EventArgs e) => _viewModel.Player.Y += 10;
-    private void OnLeftClicked(object sender, EventArgs e) => _viewModel.Player.X -= 10;
-    private void OnRightClicked(object sender, EventArgs e) => _viewModel.Player.X += 10;
+    //private void OnUpClicked(object sender, EventArgs e) {
+    //    _viewModel.Player.Y -= 10;
+    //}
+    //private void OnDownClicked(object sender, EventArgs e) {
+    //    _viewModel.Player.Y += 10;
+    //} 
+    private void OnLeftClicked(object sender, EventArgs e)
+    {
+        _viewModel.Player.X -= 10;
+        _viewModel.ClampPlayerToCanvas();
+    }
+    private void OnRightClicked(object sender, EventArgs e) {
+        _viewModel.Player.X += 10;
+        _viewModel.ClampPlayerToCanvas();
+    } 
 
     private void OnShootClicked(object sender, EventArgs e)
     {
