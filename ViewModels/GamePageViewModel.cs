@@ -51,6 +51,11 @@ namespace Astari25.ViewModels
 
         public void Update() {
 
+            if (CanvasWidth < Player.Radius * 2) {
+                // dont do anything until game loads correctly and the width is correct
+                return;
+            }
+
             if ( Player.Lives <= 0)
             {
                 IsGameOver = true;
@@ -70,6 +75,7 @@ namespace Astari25.ViewModels
 
             // Link the slider movement from GPxaml
             Player.X += Player.HorizontalSpeed;
+            ClampPlayerToCanvas();
 
 
             foreach (var bullet in Bullets) {
@@ -138,23 +144,23 @@ namespace Astari25.ViewModels
             // SPAWN LOGIC
             _framesInBetweenSpawns++;
 
-            if (_framesInBetweenSpawns >= FramesPerSpawn) {
-
+            if (_framesInBetweenSpawns >= FramesPerSpawn)
+            {
                 _framesInBetweenSpawns = 0;
 
                 float padding = 20f;
-                float screenSize = Math.Max(CanvasWidth - 2 * padding, 0);
-                if (screenSize > 0) {
-                    float startX = Random.Shared.NextSingle() * (screenSize + padding);
+                float minX = padding;
+                float maxX = CanvasWidth - padding;
 
+                if (maxX > minX)
+                {
+                    float startX = Random.Shared.NextSingle() * (maxX - minX) + minX;
                     Enemies.Add(new Enemy(startX, 0));
                 }
-                    
             }
 
             if (Player.Lives <= 0)
             {
-                //Console.WriteLine("Out of lives");
                 IsGameOver = true;
             }
 
@@ -170,6 +176,7 @@ namespace Astari25.ViewModels
 
             Bullets.Clear();
             Enemies.Clear();
+            ClampPlayerToCanvas();
 
             IsGameOver = false;
         }

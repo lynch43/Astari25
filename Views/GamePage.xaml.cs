@@ -20,6 +20,9 @@ public partial class GamePage : ContentPage
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
+        // probably not needed but something is wrong. 
+        _viewModel.CanvasWidth = (float)GameCanvas.Width;
+
 
         _gameTimer = new System.Timers.Timer(16); // back to 60fps
         _gameTimer.Elapsed += OnGameLoop;
