@@ -13,7 +13,7 @@ namespace Astari25.ViewModels
 
         // Spawning fields
         private int _framesInBetweenSpawns = 0;
-        private const int FramesPerSpawn = 60;
+        private const int FramesPerSpawn = 120;
 
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
 
@@ -95,14 +95,19 @@ namespace Astari25.ViewModels
             }
 
             // lose a life if things get to the astari base
-            foreach (var enemy in Enemies.ToList()) {
-                if (enemy.Y > Player.Y + Player.Radius + 10) // adjust tolerance if needed
+            var escapedEnemies = new List<Enemy>();
+            
+            foreach (var enemy in Enemies) {
+                if (enemy.Y > Player.Y + Player.Radius + 10)
                 {
-                    Console.WriteLine("Enemy escaped! Lose a life.");
+                    //Console.WriteLine("Enemy escaped! Lose a life.");
                     Player.Lives--;
-                    Enemies.Remove(enemy);
-
+                    escapedEnemies.Add(enemy);
                 }
+            }
+            // remove the enemy outside of list so i ament looping and removing at the same time
+            foreach (var enemy in escapedEnemies) {
+                Enemies.Remove(enemy);
             }
 
             foreach (var enemy in Enemies.ToList())
@@ -132,7 +137,7 @@ namespace Astari25.ViewModels
 
                 float padding = 20f;
                 float canvasWidth = 500f;
-                float startX = Random.Shared.NextSingle() * canvasWidth;
+                float startX = Random.Shared.NextSingle() * (canvasWidth - 2 * padding) + padding;
 
                 Enemies.Add(new Enemy(startX, 0));
             }
