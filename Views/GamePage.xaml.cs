@@ -91,7 +91,11 @@ public partial class GamePage : ContentPage
     }
 
     private void OnSliderReleased(object sender, EventArgs e) {
-        MoveSlider.Value = 0;
+
+        if (MoveSlider.Value != 0) {
+            MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
+        }
+        
         _viewModel.Player.HorizontalSpeed = 0;
     }
     private void OnLeftClicked(object sender, EventArgs e)
