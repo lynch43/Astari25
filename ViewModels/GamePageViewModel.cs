@@ -140,8 +140,8 @@ namespace Astari25.ViewModels
                 _framesInBetweenSpawns = 0;
 
                 float padding = 20f;
-                float canvasWidth = 500f;
-                float startX = Random.Shared.NextSingle() * (canvasWidth - 2 * padding) + padding;
+                float screenSize = CanvasWidth - 2 * padding;
+                float startX = Random.Shared.NextSingle() * (screenSize + padding);
 
                 Enemies.Add(new Enemy(startX, 0));
             }
