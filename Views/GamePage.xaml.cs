@@ -87,6 +87,12 @@ public partial class GamePage : ContentPage
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
         _viewModel.Player.InputX = (float)e.NewValue;
+        // everything back to zero. stops player flying off screen on start
+        var v = (float)e.NewValue;
+        if (Math.Abs(v) < _viewModel.Player.DeadZone) {
+            v = 0f;
+        }
+        _viewModel.Player.InputX = v;
 
     }
 
@@ -94,6 +100,7 @@ public partial class GamePage : ContentPage
 
         if (MoveSlider.Value != 0) {
             MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
+            Console.WriteLine($"ALERT LOOKING FOR STICK DRIFT -> InputX={_viewModel.Player.InputX}");
         }
         
         _viewModel.Player.InputX = 0f;
@@ -102,6 +109,8 @@ public partial class GamePage : ContentPage
     {
         _viewModel.Player.X -= 10;
         _viewModel.ClampPlayerToCanvas();
+
+
     }
     private void OnRightClicked(object sender, EventArgs e) {
         _viewModel.Player.X += 10;

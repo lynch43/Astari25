@@ -36,7 +36,11 @@ namespace Astari25.Models
         public float InputX { get; set; } = 0f; // slider can 1 up or down
         public float VelocityX { get; set; } = 0f;
         public float Acceleration { get; set; } = 0.5f;
-        public float MaxSpeed { get; set; } = 9f;
+        public float MaxSpeed { get; set; } = 5f;
+
+        // 
+        public float Friction { get; set; } = 0.5f;
+        public float DeadZone { get; set; } = 0.05f;
 
         public void Reset() {
 
