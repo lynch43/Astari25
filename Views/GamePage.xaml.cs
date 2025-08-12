@@ -102,9 +102,34 @@ public partial class GamePage : ContentPage
     //        MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
     //        Console.WriteLine($"ALERT LOOKING FOR STICK DRIFT -> InputX={_viewModel.Player.InputX}");
     //    }
-        
+
     //    _viewModel.Player.InputX = 0f;
     //}
+
+    // MOVEPAD
+    double _panMax = 120; // how far dragging maps to full speed (tweak later)
+
+    private void OnMovePadPanUpdated(object sender, PanUpdatedEventArgs e)
+    {
+        switch (e.StatusType)
+        {
+            case GestureStatus.Started:
+                _viewModel.Player.InputX = 0f;
+                break;
+
+            case GestureStatus.Running:
+                // Same as the slider left, right drag to [-1 : 1]
+                var dx = Math.Clamp(e.TotalX, -_panMax, _panMax);
+                float input = (float)(dx / _panMax);
+                _viewModel.Player.InputX = input;
+                break;
+
+            case GestureStatus.Completed:
+            case GestureStatus.Canceled:
+                _viewModel.Player.InputX = 0f;     // let go -> stop
+                break;
+        }
+    }
     private void OnLeftClicked(object sender, EventArgs e)
     {
         _viewModel.Player.X -= 10;
