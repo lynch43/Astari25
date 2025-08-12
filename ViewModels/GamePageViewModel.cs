@@ -79,6 +79,16 @@ namespace Astari25.ViewModels
             // Player.cs variables
             Player.VelocityX += Player.InputX * Player.Acceleration;
 
+            if (Player.VelocityX > Player.MaxSpeed)
+            {
+                Player.VelocityX = Player.MaxSpeed;
+            }
+
+            if (Player.VelocityX < Player.MaxSpeed)
+            {
+                Player.VelocityX = -Player.MaxSpeed;
+            }
+
 
 
             Player.X += Player.VelocityX;
