@@ -86,7 +86,7 @@ public partial class GamePage : ContentPage
     
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
-        _viewModel.Player.HorizontalSpeed = (float)e.NewValue;
+        _viewModel.Player.InputX = (float)e.NewValue;
 
     }
 
@@ -96,7 +96,7 @@ public partial class GamePage : ContentPage
             MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
         }
         
-        _viewModel.Player.HorizontalSpeed = 0;
+        _viewModel.Player.InputX = 0f;
     }
     private void OnLeftClicked(object sender, EventArgs e)
     {

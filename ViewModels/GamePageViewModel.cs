@@ -74,7 +74,15 @@ namespace Astari25.ViewModels
             var enemiesToRemove = new List<Enemy>();
 
             // Link the slider movement from GPxaml
-            Player.X += Player.HorizontalSpeed;
+            //Player.X += Player.HorizontalSpeed;
+
+            // Player.cs variables
+            Player.VelocityX += Player.InputX * Player.Acceleration;
+
+
+
+            Player.X += Player.VelocityX;
+            ClampPlayerToCanvas();
             
 
 
