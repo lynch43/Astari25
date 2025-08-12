@@ -47,7 +47,7 @@
 
         <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
             <!-- Vertical Slider on the left -->
-            <Slider x:Name="MoveSlider"
+            <!--<Slider x:Name="MoveSlider"
             Minimum="-1"
             Maximum="1"
             Value="0"
@@ -57,7 +57,27 @@
             ValueChanged="OnSliderValueChanged"
             ThumbColor="White"
             MaximumTrackColor="Gray"
-            MinimumTrackColor="Gray" />
+            MinimumTrackColor="Gray" /> -->
+
+            <Frame x:Name="MovePad"
+                   WidthRequest="160"
+                   HeightRequest="100"
+                   CornerRadius="12"
+                   BackgroundColor="#222"
+                   BorderColor="#666"
+                   HasShadow="False"
+                   VerticalOptions="Center"
+                   >
+                <Grid>
+                    <Label Text="MOVE"
+                           TextColor="#bbb"
+                           HorizontalOptions="Center"/>
+                    <Grid.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="OnMovePadPanUpdated"/>
+                    </Grid.GestureRecognizers>
+
+                </Grid>
+            </Frame>
 
             <!-- Shoot Button on the right -->
             <Button Text="Pew"

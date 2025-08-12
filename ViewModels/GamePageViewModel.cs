@@ -76,24 +76,21 @@ namespace Astari25.ViewModels
             // Link the slider movement from GPxaml
             //Player.X += Player.HorizontalSpeed;
 
-            // Player.cs variables
+            // Player.cs variables// Accelerate toward input
             Player.VelocityX += Player.InputX * Player.Acceleration;
 
-            if (Player.VelocityX > Player.MaxSpeed)
+            
+            Player.VelocityX = Math.Clamp(Player.VelocityX, -Player.MaxSpeed, Player.MaxSpeed);
+
+            
+            if (Math.Abs(Player.InputX) < Player.DeadZone)
             {
-                Player.VelocityX = Player.MaxSpeed;
+                if (Player.VelocityX > 0) Player.VelocityX = Math.Max(0, Player.VelocityX - Player.Friction);
+                else if (Player.VelocityX < 0) Player.VelocityX = Math.Min(0, Player.VelocityX + Player.Friction);
             }
-
-            if (Player.VelocityX < Player.MaxSpeed)
-            {
-                Player.VelocityX = -Player.MaxSpeed;
-            }
-
-
 
             Player.X += Player.VelocityX;
             ClampPlayerToCanvas();
-            
 
 
             foreach (var bullet in Bullets) {

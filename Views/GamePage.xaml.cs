@@ -96,15 +96,15 @@ public partial class GamePage : ContentPage
 
     }
 
-    private void OnSliderReleased(object sender, EventArgs e) {
+    //private void OnSliderReleased(object sender, EventArgs e) {
 
-        if (MoveSlider.Value != 0) {
-            MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
-            Console.WriteLine($"ALERT LOOKING FOR STICK DRIFT -> InputX={_viewModel.Player.InputX}");
-        }
+    //    if (MoveSlider.Value != 0) {
+    //        MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
+    //        Console.WriteLine($"ALERT LOOKING FOR STICK DRIFT -> InputX={_viewModel.Player.InputX}");
+    //    }
         
-        _viewModel.Player.InputX = 0f;
-    }
+    //    _viewModel.Player.InputX = 0f;
+    //}
     private void OnLeftClicked(object sender, EventArgs e)
     {
         _viewModel.Player.X -= 10;
