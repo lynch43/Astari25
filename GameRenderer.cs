@@ -12,16 +12,19 @@ namespace Astari25.Views
         private readonly ObservableCollection<Bullet> _bullets;
         private readonly ObservableCollection<Enemy> _enemies;
         private readonly ObservableCollection<Explosion> _explosions;
+        private readonly ObservableCollection<KillConfirmed> _killPopups;
 
         public GameRenderer(Player player,
                             ObservableCollection<Bullet> bullets,
                             ObservableCollection<Enemy> enemies,
-                            ObservableCollection<Explosion> explosions)
+                            ObservableCollection<Explosion> explosions,
+                            ObservableCollection<KillConfirmed> killPopups)
         {
             _player = player ?? throw new ArgumentNullException(nameof(player));
             _bullets = bullets ?? new ObservableCollection<Bullet>();
             _enemies = enemies ?? new ObservableCollection<Enemy>();
             _explosions = explosions ?? new ObservableCollection<Explosion>();
+            _killPopups = killPopups ?? new();
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -65,6 +68,17 @@ namespace Astari25.Views
                 canvas.StrokeColor = Colors.Yellow.WithAlpha(0.8f * alpha);
                 canvas.StrokeSize = 2;
                 canvas.DrawCircle(ex.X, ex.Y, radius);
+            }
+
+            foreach (var kc in _killPopups.ToList())
+            {
+                var t = 1f - kc.framesLeft / (float)kc.totalFrames;
+                canvas.FontColor = Colors.Gold.WithAlpha(1f - t);
+                canvas.DrawString(
+                    $"+{kc.hitPoint}",
+                    new RectF(kc.X - 40, kc.Y - 20 - 30f * t, 80, 40),
+                    HorizontalAlignment.Center, VerticalAlignment.Center
+                );
             }
         }
     }

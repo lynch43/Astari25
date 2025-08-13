@@ -29,7 +29,7 @@ namespace Astari25.ViewModels
         public ObservableCollection<KillConfirmed> KillPopups { get; } = new();
 
         public GamePageViewModel() {
-            GameDrawable = new GameRenderer(Player, Bullets, Enemies, Explosions);
+            GameDrawable = new GameRenderer(Player, Bullets, Enemies, Explosions, KillPopups);
         }
 
         public float PlayPad { get; set; } = 23f;
@@ -239,6 +239,7 @@ namespace Astari25.ViewModels
 
             Bullets.Clear();
             Enemies.Clear();
+            KillPopups.Clear();
             IsGameOver = false;
         }
 
