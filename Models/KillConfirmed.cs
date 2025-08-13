@@ -21,6 +21,9 @@ namespace Astari25.Models
             this.hitPoint = hitPoint;
             this.framesLeft = framesLeft;
             this.totalFrames = totalFrames;
-        } 
+        }
+
+        public void Update() => framesLeft--;
+        public bool IsDone => framesLeft <= 0;
     }
 }
