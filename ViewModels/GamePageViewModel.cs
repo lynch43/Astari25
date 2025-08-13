@@ -27,7 +27,7 @@ namespace Astari25.ViewModels
             GameDrawable = new GameRenderer(Player, Bullets, Enemies, () => CanvasWidth);
         }
 
-        public float PlayPad { get; set; } = 12f;
+        public float PlayPad { get; set; } = 23f;
 
 
         // Overrule Everything else and place player at bottom of Canvas
@@ -177,16 +177,16 @@ namespace Astari25.ViewModels
             {
                 _framesInBetweenSpawns = 0;
 
-                float padding = 30f;
-                float canvasWidth = CanvasWidth;
+                float r = 12f;
+                float minX = PlayPad + r;
+                float maxX = CanvasWidth - PlayPad - r;
 
-                if (canvasWidth > padding * 2)
+                if (maxX > minX)
                 {
-                    float startX = Random.Shared.NextSingle() * (canvasWidth - 2 * padding) + padding;
-                    Enemies.Add(new Enemy(startX, 0));
+                    float startX = Random.Shared.NextSingle() * (maxX - minX) + minX;
+                    float startY = PlayPad + r;
+                    Enemies.Add(new Enemy(startX, startY));
                 }
-
-                //Console.WriteLine($"CHECK CHECK CHECK minX: {minX}, maxX: {maxX}");
             }
 
             if (Player.Lives <= 0)
