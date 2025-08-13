@@ -70,21 +70,16 @@ public partial class GamePage : ContentPage
 
         // media query basically for different sizes. 
         var w = (float)GameCanvas.Width;
+        var h = (float)GameCanvas.Height;
+
 
         // check for not initiated yet
-        if (w <= 0) {
-            return; 
-        }
-
-        // compare that to width value and then set the HeightReqest
-        // keeps it square and then changes height
-        if (Math.Abs(GameCanvas.HeightRequest - w) > 0.5f) {
-
-            GameCanvas.HeightRequest = w;
+        if (w <= 0 || h <= 0) {
+            return;
         }
 
         _viewModel.CanvasWidth = w;
-        _viewModel.CanvasHeight = w;
+        _viewModel.CanvasHeight = h;
 
         _viewModel.SetPlayerAtBottom();
         _viewModel.ClampPlayerToCanvas();
