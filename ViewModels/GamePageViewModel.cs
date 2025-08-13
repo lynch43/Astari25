@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+using System.Linq;
+
 namespace Astari25.ViewModels
 {
     public class GamePageViewModel : INotifyPropertyChanged
@@ -24,6 +26,7 @@ namespace Astari25.ViewModels
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
 
         public ObservableCollection<Explosion> Explosions { get; } = new();
+        public ObservableCollection<KillConfirmed> KillPopups { get; } = new();
 
         public GamePageViewModel() {
             GameDrawable = new GameRenderer(Player, Bullets, Enemies, Explosions);
@@ -118,6 +121,7 @@ namespace Astari25.ViewModels
                             enemiesToRemove.Add(enemy);
 
                             Score += 10; // every hit amend the score on xaml
+                            KillPopups.Add(new KillConfirmed(enemy.X, enemy.Y, 10, 24, 24));
 
 
 
@@ -150,6 +154,14 @@ namespace Astari25.ViewModels
                 if (exp.IsDone)
                 {
                     Explosions.Remove(exp);
+                }
+            }
+
+            // update and then begin to tick
+            foreach (var kc in KillPopups.ToList()) {
+                kc.Update();
+                if (kc.IsDone) {
+                    KillPopups.Remove(kc);
                 }
             }
 
