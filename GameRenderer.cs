@@ -73,10 +73,11 @@ namespace Astari25.Views
             foreach (var kc in _killPopups.ToList())
             {
                 var t = 1f - kc.framesLeft / (float)kc.totalFrames;
+                canvas.FontSize = 32f;
                 canvas.FontColor = Colors.Gold.WithAlpha(1f - t);
                 canvas.DrawString(
                     $"+{kc.hitPoint}",
-                    new RectF(kc.X - 40, kc.Y - 20 - 30f * t, 80, 40),
+                    new RectF(kc.X - 70, kc.Y - 35 - 40f * t, 140, 70),
                     HorizontalAlignment.Center, VerticalAlignment.Center
                 );
             }
