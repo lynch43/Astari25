@@ -27,7 +27,7 @@
             <Label Text="Lives:" FontSize="30" TextColor="White"/>
             <Label Text="{Binding Player.Lives}" FontSize="30" TextColor="White"/>
             <Label Text="Score:" FontSize="30" TextColor="White"/>
-            <Label Text="{Binding Player.Score}" FontSize="30" TextColor="White"/>
+            <Label Text="{Binding Score}" FontSize="30" TextColor="White"/>
         </HorizontalStackLayout>
 
         
