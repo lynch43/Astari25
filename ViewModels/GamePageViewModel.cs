@@ -23,8 +23,10 @@ namespace Astari25.ViewModels
 
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
 
+        public ObservableCollection<Explosion> Explosions { get; } = new();
+
         public GamePageViewModel() {
-            GameDrawable = new GameRenderer(Player, Bullets, Enemies, () => CanvasWidth);
+            GameDrawable = new GameRenderer(Player, Bullets, Enemies, Explosions);
         }
 
         public float PlayPad { get; set; } = 23f;
@@ -116,7 +118,11 @@ namespace Astari25.ViewModels
                             enemiesToRemove.Add(enemy);
 
                             Score += 10; // every hit amend the score on xaml
-                            Console.WriteLine($"Got on. Score: {Score}");
+
+
+
+                            Explosions.Add(new Explosion(enemy.X, enemy.Y));
+                            //Console.WriteLine($"Got on. Score: {Score}");
                             break;
                         }
                     }
@@ -134,6 +140,17 @@ namespace Astari25.ViewModels
 
             foreach (var enemy in Enemies.ToList()) {
                 enemy.Update();
+            }
+
+            // need to get rid of the explosions
+            foreach (var exp in Explosions.ToList()) {
+
+
+                exp.Update();
+                if (exp.IsDone)
+                {
+                    Explosions.Remove(exp);
+                }
             }
 
             // lose a life if things get to the astari base
