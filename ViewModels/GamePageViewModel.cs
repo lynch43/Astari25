@@ -27,11 +27,14 @@ namespace Astari25.ViewModels
             GameDrawable = new GameRenderer(Player, Bullets, Enemies, () => CanvasWidth);
         }
 
+        public float PlayPad { get; set; } = 12f;
+
+
         // Overrule Everything else and place player at bottom of Canvas
         public void SetPlayerAtBottom() {
 
             // padding
-            Player.Y = CanvasHeight - Player.Radius - 8f;
+            Player.Y = CanvasHeight - PlayPad - Player.Radius;
         }
 
 
@@ -213,9 +216,8 @@ namespace Astari25.ViewModels
         // Stop the slider from sending Player off screen
         public void ClampPlayerToCanvas()
         {
-            const float pad = 10f;
 
-            Player.X = Math.Clamp(Player.X, pad + Player.Radius, CanvasWidth - pad - Player.Radius);
+            Player.X = Math.Clamp(Player.X, PlayPad + Player.Radius, CanvasWidth - PlayPad - Player.Radius);
         }
 
         private bool IsColliding(float x1, float y1, float r1, float x2, float y2, float r2)
