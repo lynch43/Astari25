@@ -31,8 +31,11 @@ namespace Astari25.ViewModels
         public void SetPlayerAtBottom() {
 
             // padding
-            Player.Y = CanvasHeight - Player.Radius - 10f;
+            Player.Y = CanvasHeight - Player.Radius - 8f;
         }
+
+
+
 
         public bool IsGameOver { get; set; } = false;
 

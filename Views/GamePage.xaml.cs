@@ -65,16 +65,33 @@ public partial class GamePage : ContentPage
 
     // Change canvas size
     
-
+    // size to the phone' width
     private void OnCanvasSizeChanged(object sender, EventArgs e) {
-        _viewModel.CanvasWidth = (float)GameCanvas.Width;
-        _viewModel.CanvasHeight = (float)GameCanvas.Height;
+
+        // media query basically for different sizes. 
+        var w = (float)GameCanvas.Width;
+
+        // check for not initiated yet
+        if (w <= 0) {
+            return; 
+        }
+
+        // compare that to width value and then set the HeightReqest
+        // keeps it square and then changes height
+        if (Math.Abs(GameCanvas.HeightRequest - w) > 0.5f) {
+
+            GameCanvas.HeightRequest = w;
+        }
+
+        _viewModel.CanvasWidth = w;
+        _viewModel.CanvasHeight = w;
 
         _viewModel.SetPlayerAtBottom();
         _viewModel.ClampPlayerToCanvas();
 
         // debug
         Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
+
     }
 
 
