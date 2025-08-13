@@ -3,89 +3,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Astari25.ViewModels"
              x:Class="Astari25.Views.GamePage"
-             
              BackgroundColor="Black">
 
     <ContentPage.BindingContext>
         <vm:GamePageViewModel/>
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="10" Spacing="10">
+    
+    <Grid Padding="12" RowSpacing="12"
+          RowDefinitions="Auto,Auto,*,Auto">
 
-        <!-- Title -->
-        <Label Text="ASTARI"
+        
+        <Label Grid.Row="0"
+               Text="ASTARI"
                FontSize="38"
                HorizontalOptions="Center"
                TextColor="White"/>
 
-        <!-- Lives and Score -->
-        <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
-            <Label Text="Lives:"
-                   FontSize="30"
-                   TextColor="White"/>
-            <Label Text="{Binding Player.Lives}"
-                   FontSize="30"
-                   TextColor="White"/>
-            <Label Text="Score:"
-                   FontSize="30"
-                   TextColor="White"/>
-            <Label Text="{Binding Player.Score}"
-                   FontSize="30"
-                   TextColor="White"/>
+        
+        <HorizontalStackLayout Grid.Row="1"
+                               HorizontalOptions="Center"
+                               Spacing="40">
+            <Label Text="Lives:" FontSize="30" TextColor="White"/>
+            <Label Text="{Binding Player.Lives}" FontSize="30" TextColor="White"/>
+            <Label Text="Score:" FontSize="30" TextColor="White"/>
+            <Label Text="{Binding Player.Score}" FontSize="30" TextColor="White"/>
         </HorizontalStackLayout>
 
-        <!-- Game Canvas -->
-        <Grid HorizontalOptions="Center"
-              VerticalOptions="Center">
+        
+        <Border Grid.Row="2" Stroke="White" StrokeThickness="1" Padding="0">
             <GraphicsView x:Name="GameCanvas"
-                  Drawable="{Binding GameDrawable}"
-                  WidthRequest="600"
-                  HeightRequest="550"
-                  BackgroundColor="Black"/>
-        </Grid>
+                          Drawable="{Binding GameDrawable}"
+                          BackgroundColor="Black"
+                          HorizontalOptions="Fill"
+                          VerticalOptions="Fill" />
+        </Border>
 
-
-        <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
-            <!-- Vertical Slider on the left -->
-            <!--<Slider x:Name="MoveSlider"
-            Minimum="-1"
-            Maximum="1"
-            Value="0"
-            DragCompleted="OnSliderReleased"
-            HeightRequest="70"
-            WidthRequest="230"
-            ValueChanged="OnSliderValueChanged"
-            ThumbColor="White"
-            MaximumTrackColor="Gray"
-            MinimumTrackColor="Gray" /> -->
-
+        
+        <Grid Grid.Row="3" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            
             <Frame x:Name="MovePad"
-                   WidthRequest="160"
-                   HeightRequest="100"
+                   Grid.Column="0"
+                   HeightRequest="90"
                    CornerRadius="12"
                    BackgroundColor="#222"
                    BorderColor="#666"
                    HasShadow="False"
-                   VerticalOptions="Center"
-                   >
+                   Padding="0">
                 <Grid>
                     <Label Text="MOVE"
                            TextColor="#bbb"
-                           HorizontalOptions="Center"/>
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
                     <Grid.GestureRecognizers>
                         <PanGestureRecognizer PanUpdated="OnMovePadPanUpdated"/>
                     </Grid.GestureRecognizers>
-
                 </Grid>
             </Frame>
 
-            <!-- Shoot Button on the right -->
-            <Button Text="Pew"
-            FontSize="19"
-            HeightRequest="60"
-            WidthRequest="80"
-            Clicked="OnShootClicked"/>
-        </HorizontalStackLayout>
+            
+            <Button Grid.Column="1"
+                    Text="Pew"
+                    FontSize="19"
+                    HeightRequest="90"
+                    WidthRequest="120"
+                    Clicked="OnShootClicked"/>
+        </Grid>
 
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
