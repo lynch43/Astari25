@@ -16,7 +16,8 @@ namespace Astari25.ViewModels
         private const int FramesPerSpawn = 120;
 
         // Default Width for spawning probably not gonna work on windows. dont care for now
-        public float CanvasWidth { get; set; } = 500f;
+        public float CanvasWidth { get; set; } = 300f;
+        public float CanvasHeight { get; set; } = 300f;
 
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
 
@@ -24,6 +25,13 @@ namespace Astari25.ViewModels
 
         public GamePageViewModel() {
             GameDrawable = new GameRenderer(Player, Bullets, Enemies, () => CanvasWidth);
+        }
+
+        // Overrule Everything else and place player at bottom of Canvas
+        public void SetPlayerAtBottom() {
+
+            // padding
+            Player.Y = CanvasHeight - Player.Radius - 10f;
         }
 
         public bool IsGameOver { get; set; } = false;
@@ -189,20 +197,22 @@ namespace Astari25.ViewModels
 
             Score = 0;
             Player.Lives = 3;
-            Player.X = 300;
-            Player.Y = 500;
+
+
+            Player.X = CanvasWidth / 2f;
+            SetPlayerAtBottom();
 
             Bullets.Clear();
             Enemies.Clear();
-            ClampPlayerToCanvas();
-
             IsGameOver = false;
         }
 
         // Stop the slider from sending Player off screen
         public void ClampPlayerToCanvas()
         {
-            Player.X = Math.Clamp(Player.X, Player.Radius, CanvasWidth - Player.Radius);
+            const float pad = 10f;
+
+            Player.X = Math.Clamp(Player.X, pad + Player.Radius, CanvasWidth - pad - Player.Radius);
         }
 
         private bool IsColliding(float x1, float y1, float r1, float x2, float y2, float r2)

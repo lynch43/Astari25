@@ -68,7 +68,10 @@ public partial class GamePage : ContentPage
 
     private void OnCanvasSizeChanged(object sender, EventArgs e) {
         _viewModel.CanvasWidth = (float)GameCanvas.Width;
+        _viewModel.CanvasHeight = (float)GameCanvas.Height;
 
+        _viewModel.SetPlayerAtBottom();
+        _viewModel.ClampPlayerToCanvas();
 
         // debug
         Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
