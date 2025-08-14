@@ -20,7 +20,7 @@ public partial class GamePage : ContentPage
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        // probably not needed but something is wrong. 
+        
         _viewModel.CanvasWidth = (float)GameCanvas.Width;
 
 
@@ -68,18 +68,8 @@ public partial class GamePage : ContentPage
     // size to the phone' width
     private void OnCanvasSizeChanged(object sender, EventArgs e) {
 
-        // media query basically for different sizes. 
-        var w = (float)GameCanvas.Width;
-        var h = (float)GameCanvas.Height;
-
-
-        // check for not initiated yet
-        if (w <= 0 || h <= 0) {
-            return;
-        }
-
-        _viewModel.CanvasWidth = w;
-        _viewModel.CanvasHeight = h;
+        _viewModel.CanvasWidth = (float)GameCanvas.Width;
+        _viewModel.CanvasHeight = (float)GameCanvas.Height;
 
         _viewModel.SetPlayerAtBottom();
         _viewModel.ClampPlayerToCanvas();
