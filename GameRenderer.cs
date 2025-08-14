@@ -13,18 +13,20 @@ namespace Astari25.Views
         private readonly ObservableCollection<Enemy> _enemies;
         private readonly ObservableCollection<Explosion> _explosions;
         private readonly ObservableCollection<KillConfirmed> _killPopups;
-
+        private readonly float _playPad;
         public GameRenderer(Player player,
                             ObservableCollection<Bullet> bullets,
                             ObservableCollection<Enemy> enemies,
                             ObservableCollection<Explosion> explosions,
-                            ObservableCollection<KillConfirmed> killPopups)
+                            ObservableCollection<KillConfirmed> killPopups,
+                            float playPad)
         {
             _player = player ?? throw new ArgumentNullException(nameof(player));
             _bullets = bullets ?? new ObservableCollection<Bullet>();
             _enemies = enemies ?? new ObservableCollection<Enemy>();
             _explosions = explosions ?? new ObservableCollection<Explosion>();
             _killPopups = killPopups ?? new();
+            _playPad = playPad;
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -33,11 +35,11 @@ namespace Astari25.Views
             canvas.FillColor = Colors.Black;
             canvas.FillRectangle(dirtyRect);
 
-            float padding = 20f;
-            float left = padding;
-            float top = padding;
-            float right = dirtyRect.Width - padding;
-            float bottom = dirtyRect.Height - padding;
+            //float padding = 20f;
+            float left = _playPad;
+            float top = _playPad;
+            float right = dirtyRect.Width - _playPad;
+            float bottom = dirtyRect.Height - _playPad;
 
             canvas.StrokeColor = Colors.White;
             canvas.StrokeSize = 2;
