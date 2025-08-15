@@ -7,33 +7,32 @@ namespace Astari25.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        public AppSettings Settings { get; set; } = new AppSettings();
+        public AppSettings Settings { get; set; } = new();
 
         public ICommand SaveCommand { get; }
         public ICommand ReloadCommand { get; }
 
         public SettingsViewModel()
         {
+            LoadSettings();
+
             SaveCommand = new Command(SaveSettings);
-            ReloadCommand = new Command(ReloadSettings);
+            ReloadCommand = new Command(LoadSettings);
+        }
+
+        private void LoadSettings()
+        {
+            Settings.Difficulty = Preferences.Get(nameof(Settings.Difficulty), "Normal");
+            OnPropertyChanged(nameof(Settings));
         }
 
         private void SaveSettings()
         {
-            // For now, just log or debug output.
-            Console.WriteLine($"Settings saved: Difficulty = {Settings.Difficulty}");
+            Preferences.Set(nameof(Settings.Difficulty), Settings.Difficulty);
         }
 
-        private void ReloadSettings()
-        {
-            // For now, just reset to default
-            Settings = new AppSettings();
-            OnPropertyChanged(nameof(Settings));
-            Console.WriteLine("Settings reloaded.");
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
