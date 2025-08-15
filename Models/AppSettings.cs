@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Astari25.Models
 {
-    internal class AppSettings
+    public class AppSettings
     {
+        // easy, normal, hard
+        public string Difficulty { get; set; } = "Normal";
+        
     }
 }
