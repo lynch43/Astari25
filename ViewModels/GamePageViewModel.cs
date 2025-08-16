@@ -14,8 +14,8 @@ namespace Astari25.ViewModels
         public IDrawable GameDrawable { get; }
 
         // Spawning fields
-        private int _framesInBetweenSpawns = 0;
-        private const int FramesPerSpawn = 120;
+        private int _framesInBetweensSpawns = 0;
+        private int FramesPerSpawn => GetSpawnRateFromDifficulty();
 
         // Default Width for spawning probably not gonna work on windows. dont care for now
         public float CanvasWidth { get; set; } = 300f;
@@ -57,6 +57,8 @@ namespace Astari25.ViewModels
 
 
         private int _score;
+        private int _framesInBetweenSpawns;
+
         public int Score {
             get => _score;
             set {
@@ -100,7 +102,7 @@ namespace Astari25.ViewModels
 
             
             Player.VelocityX = Math.Clamp(Player.VelocityX, -Player.MaxSpeed, Player.MaxSpeed);
-
+            
             
             if (Math.Abs(Player.InputX) < Player.DeadZone)
             {
@@ -242,6 +244,22 @@ namespace Astari25.ViewModels
             KillPopups.Clear();
             IsGameOver = false;
         }
+
+
+
+        private int GetSpawnRateFromDifficulty() {
+
+            var diff = Preferences.Get(nameof(AppSettings.Difficulty), "Normal");
+            return diff switch {
+                "Easy" => 150,
+                "Normal" => 120,
+                "Hard" => 80,
+                _ => 120
+            };
+        }
+
+
+
 
         // Stop the slider from sending Player off screen
         public void ClampPlayerToCanvas()
