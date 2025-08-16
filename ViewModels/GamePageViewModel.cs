@@ -135,6 +135,8 @@ namespace Astari25.ViewModels
 
             }
 
+
+
             foreach (var bullet in bulletsToRemove) {
                 Bullets.Remove(bullet);
             }
@@ -216,7 +218,12 @@ namespace Astari25.ViewModels
                 {
                     float startX = Random.Shared.NextSingle() * (maxX - minX) + minX;
                     float startY = PlayPad + r;
-                    Enemies.Add(new Enemy(startX, startY));
+                    //Enemies.Add(new Enemy(startX, startY));
+
+
+                    var enemy = new Enemy(startX, startY);
+                    enemy.ApplyDifficulty(Preferences.Get(nameof(AppSettings.Difficulty), "Normal"));
+                    Enemies.Add(enemy);
                 }
             }
 
@@ -255,6 +262,18 @@ namespace Astari25.ViewModels
                 "Normal" => 120,
                 "Hard" => 80,
                 _ => 120
+            };
+        }
+
+        private float GetEnemySpeedMultiplier()
+        {
+            var diff = Preferences.Get(nameof(AppSettings.Difficulty), "Normal");
+            return diff switch
+            {
+                "Easy" => 0.7f,
+                "Normal" => 1f,
+                "Hard" => 1.4f,
+                _ => 1f
             };
         }
 
