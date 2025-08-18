@@ -64,7 +64,8 @@ public partial class GamePage : ContentPage
 
                 if (shoot)
                 {
-                    _viewModel.Bullets.Add(new Bullet(_viewModel.Player.X, _viewModel.Player.Y));
+                    //_viewModel.Bullets.Add(new Bullet(_viewModel.Player.X, _viewModel.Player.Y));
+                    _viewModel.TryShoot(DateTime.UtcNow);
                 }
 
                 if (_viewModel.Player.InputX != 0f)
@@ -167,7 +168,7 @@ public partial class GamePage : ContentPage
 
     private void OnShootClicked(object sender, EventArgs e)
     {
-        var bullet = new Bullet(_viewModel.Player.X, _viewModel.Player.Y);
-        _viewModel.Bullets.Add(bullet);
+        //var bullet = new Bullet(_viewModel.Player.X, _viewModel.Player.Y);
+        _viewModel.TryShoot(DateTime.UtcNow);
     }
 }

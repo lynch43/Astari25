@@ -23,7 +23,7 @@ namespace Astari25.ViewModels
 
         // stop spamming bullet
         public int MaxBulletsOnScreen { get; set; } = 5;
-        TimeSpan _fireCooldown = TimeSpan.FromMilliseconds(150);
+        TimeSpan _fireCooldown = TimeSpan.FromMilliseconds(180);
         DateTime _nextShotAtUtc = DateTime.MinValue;
 
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
@@ -53,6 +53,8 @@ namespace Astari25.ViewModels
             if (nowUtc < _nextShotAtUtc) {
                 return false;
             }
+
+            PruneBullets();
             if (Bullets.Count >= MaxBulletsOnScreen) {
                 return false;
             }
@@ -60,6 +62,15 @@ namespace Astari25.ViewModels
             Bullets.Add(new Bullet(Player.X, Player.Y));
             _nextShotAtUtc = nowUtc + _fireCooldown;
             return true;
+        }
+
+        private void PruneBullets()
+        {
+            for (int i = Bullets.Count - 1; i >= 0; i--)
+            {
+                if (Bullets[i].Y < -20)
+                    Bullets.RemoveAt(i);
+            }
         }
 
 
@@ -317,11 +328,5 @@ namespace Astari25.ViewModels
             return distanceSquared <= radiusSum * radiusSum;
 
         }
-
-        
-
-
     }
-
-
 }
