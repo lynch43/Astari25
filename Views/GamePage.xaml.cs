@@ -1,8 +1,11 @@
 using Astari25.Models;
 using Astari25.ViewModels;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Timers;
+
+#if WINDOWS
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
+#endif
 
 namespace Astari25.Views;
 
@@ -16,34 +19,35 @@ public partial class GamePage : ContentPage
     {
         InitializeComponent();
 
+        // Track canvas size changes 
         GameCanvas.SizeChanged += OnCanvasSizeChanged;
 
         _viewModel = new GamePageViewModel();
         BindingContext = _viewModel;
         GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        
         _viewModel.CanvasWidth = (float)GameCanvas.Width;
 
-
-        _gameTimer = new System.Timers.Timer(16); // back to 60fps
+        // Start main game loop (~60 FPS)
+        _gameTimer = new System.Timers.Timer(16);
         _gameTimer.Elapsed += OnGameLoop;
         _gameTimer.Start();
 
-        if (DeviceInfo.Platform == DevicePlatform.WinUI) { 
+        // Windows-only: show controls popup
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
             ShowWindowControlsPopup();
-        }
     }
 
-    private async void ShowWindowControlsPopup() {
-
+    
+    private async void ShowWindowControlsPopup()
+    {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-
-            await DisplayAlert("Controls", "Use Arrow Keys to Move, Up arrow to Shoot", "OK");
+            await DisplayAlert("Controls", "Use Left/Right arrows to Move, Up arrow to Shoot", "OK");
         });
     }
 
+   
     private async void OnGameLoop(object sender, ElapsedEventArgs e)
     {
         _viewModel.Update();
@@ -64,33 +68,22 @@ public partial class GamePage : ContentPage
                     _popupShown = false;
                     _gameTimer.Start();
                 }
-                else {
-                    await MainThread.InvokeOnMainThreadAsync(() =>
-                    {
-                        _gameTimer.Stop();
-                        
-
-                    });
-
+                else
+                {
+                    _gameTimer.Stop();
                     await Shell.Current.GoToAsync("StartPage");
                 }
             }
         });
     }
 
-    // Change canvas size
-
-    // size to the phone' width
+    
     private void OnCanvasSizeChanged(object sender, EventArgs e)
     {
         float width = (float)GameCanvas.Width;
 
-        if (DeviceInfo.Platform == DevicePlatform.WinUI)
-        {
-            // Cap the play area width on Windows
-            if (width > 800f)
-                width = 800f;
-        }
+        if (DeviceInfo.Platform == DevicePlatform.WinUI && width > 800f)
+            width = 800f;
 
         _viewModel.CanvasWidth = width;
         _viewModel.CanvasHeight = (float)GameCanvas.Height;
@@ -101,41 +94,71 @@ public partial class GamePage : ContentPage
         Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
     }
 
+    
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
 
-    // Stop any timers from ticking after game closes
+    #if WINDOWS
+    if (DeviceInfo.Platform == DevicePlatform.WinUI)
+    {
+        var nativeWindow = this.Window?.Handler?.PlatformView as Microsoft.UI.Xaml.Window;
+        if (nativeWindow?.Content is UIElement root)
+        {
+            root.KeyDown += OnKeyDown;
+            root.KeyUp += OnKeyUp;
+        }
+    }
+    #endif
+    }
+
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+
+    #if WINDOWS
+    if (DeviceInfo.Platform == DevicePlatform.WinUI)
+    {
+        var nativeWindow = this.Window?.Handler?.PlatformView as Microsoft.UI.Xaml.Window;
+        if (nativeWindow?.Content is UIElement root)
+        {
+            root.KeyDown -= OnKeyDown;
+            root.KeyUp -= OnKeyUp;
+        }
+    }
+    #endif
+
         _gameTimer?.Stop();
         _gameTimer?.Dispose();
     }
 
+    #if WINDOWS
+    
+    private void OnKeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        Console.WriteLine($"Key down: {e.Key}");
+        
+    }
+
+    
+    private void OnKeyUp(object sender, KeyRoutedEventArgs e)
+    {
+        Console.WriteLine($"Key up: {e.Key}");
+        
+    }
+    #endif
+
     
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
-        _viewModel.Player.InputX = (float)e.NewValue;
-        // everything back to zero. stops player flying off screen on start
         var v = (float)e.NewValue;
-        if (Math.Abs(v) < _viewModel.Player.DeadZone) {
+        if (Math.Abs(v) < _viewModel.Player.DeadZone)
             v = 0f;
-        }
-        _viewModel.Player.InputX = v;
 
+        _viewModel.Player.InputX = v;
     }
 
-    //private void OnSliderReleased(object sender, EventArgs e) {
-
-    //    if (MoveSlider.Value != 0) {
-    //        MainThread.BeginInvokeOnMainThread(() => MoveSlider.Value = 0);
-    //        Console.WriteLine($"ALERT LOOKING FOR STICK DRIFT -> InputX={_viewModel.Player.InputX}");
-    //    }
-
-    //    _viewModel.Player.InputX = 0f;
-    //}
-
-    // MOVEPAD
-    double _panMax = 120; // how far dragging maps to full speed (tweak later)
-
+    double _panMax = 120; // mapping drag distance to full speed
     private void OnMovePadPanUpdated(object sender, PanUpdatedEventArgs e)
     {
         switch (e.StatusType)
@@ -143,31 +166,28 @@ public partial class GamePage : ContentPage
             case GestureStatus.Started:
                 _viewModel.Player.InputX = 0f;
                 break;
-
             case GestureStatus.Running:
-                // Same as the slider left, right drag to [-1 : 1]
                 var dx = Math.Clamp(e.TotalX, -_panMax, _panMax);
-                float input = (float)(dx / _panMax);
-                _viewModel.Player.InputX = input;
+                _viewModel.Player.InputX = (float)(dx / _panMax);
                 break;
-
             case GestureStatus.Completed:
             case GestureStatus.Canceled:
-                _viewModel.Player.InputX = 0f;     // let go -> stop
+                _viewModel.Player.InputX = 0f;
                 break;
         }
     }
+
     private void OnLeftClicked(object sender, EventArgs e)
     {
         _viewModel.Player.X -= 10;
         _viewModel.ClampPlayerToCanvas();
-
-
     }
-    private void OnRightClicked(object sender, EventArgs e) {
+
+    private void OnRightClicked(object sender, EventArgs e)
+    {
         _viewModel.Player.X += 10;
         _viewModel.ClampPlayerToCanvas();
-    } 
+    }
 
     private void OnShootClicked(object sender, EventArgs e)
     {
