@@ -32,14 +32,15 @@ namespace Astari25.ViewModels
             GameDrawable = new GameRenderer(Player, Bullets, Enemies, Explosions, KillPopups, PlayPad);
         }
 
-        public float PlayPad { get; set; } = 23f;
+        public float PlayPad { get; set; } = 24f;
 
 
         // Overrule Everything else and place player at bottom of Canvas
         public void SetPlayerAtBottom() {
 
             // padding
-            Player.Y = CanvasHeight - PlayPad - Player.Radius;
+            float bottomPadding = 35f;
+            Player.Y = CanvasHeight - bottomPadding - Player.Radius;
         }
 
 

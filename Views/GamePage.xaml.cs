@@ -64,19 +64,26 @@ public partial class GamePage : ContentPage
     }
 
     // Change canvas size
-    
-    // size to the phone' width
-    private void OnCanvasSizeChanged(object sender, EventArgs e) {
 
-        _viewModel.CanvasWidth = (float)GameCanvas.Width;
+    // size to the phone' width
+    private void OnCanvasSizeChanged(object sender, EventArgs e)
+    {
+        float width = (float)GameCanvas.Width;
+
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+        {
+            // Cap the play area width on Windows
+            if (width > 800f)
+                width = 800f;
+        }
+
+        _viewModel.CanvasWidth = width;
         _viewModel.CanvasHeight = (float)GameCanvas.Height;
 
         _viewModel.SetPlayerAtBottom();
         _viewModel.ClampPlayerToCanvas();
 
-        // debug
         Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
-
     }
 
 

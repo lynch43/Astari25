@@ -35,8 +35,9 @@
             <GraphicsView x:Name="GameCanvas"
                           Drawable="{Binding GameDrawable}"
                           BackgroundColor="Black"
-                          HorizontalOptions="Fill"
-                          VerticalOptions="Fill" />
+                          HorizontalOptions="Center"
+                          VerticalOptions="Fill"
+                          WidthRequest="{OnPlatform WinUI=650, Default=-1 }"/>
         </Border>
 
         
