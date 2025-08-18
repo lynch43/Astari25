@@ -45,11 +45,17 @@ namespace Astari25.Views
             canvas.StrokeSize = 2;
             canvas.DrawRectangle(left, top, right - left, bottom - top);
 
-           
-            canvas.FillColor = Colors.White;
-            canvas.FillCircle(_player.X, _player.Y, _player.Radius);
 
-           
+            canvas.FillColor = Colors.White;
+            var shipSize = _player.Radius * 2;
+            PathF playerPath = new PathF();
+            playerPath.MoveTo(_player.X, _player.Y - shipSize);                        // tip
+            playerPath.LineTo(_player.X - shipSize * 0.5f, _player.Y + shipSize * 0.6f); // left
+            playerPath.LineTo(_player.X + shipSize * 0.5f, _player.Y + shipSize * 0.6f); // right
+            playerPath.Close();
+            canvas.FillPath(playerPath);
+
+
             canvas.FillColor = Colors.Yellow;
             foreach (var b in _bullets.ToList())
                 canvas.FillCircle(b.X, b.Y, 5);
