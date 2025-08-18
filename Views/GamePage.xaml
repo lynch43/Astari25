@@ -41,7 +41,7 @@
         </Border>
 
         
-        <Grid Grid.Row="3" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+        <Grid Grid.Row="3" ColumnDefinitions="*,Auto" ColumnSpacing="12" IsVisible="{OnPlatform Android= true, iOS=true, WinUI=false}">
             
             <Frame x:Name="MovePad"
                    Grid.Column="0"
@@ -64,7 +64,7 @@
 
             
             <Button Grid.Column="1"
-                    Text="Pew"
+                    Text="Shoot"
                     FontSize="19"
                     HeightRequest="90"
                     WidthRequest="120"
