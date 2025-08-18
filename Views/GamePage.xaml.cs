@@ -1,5 +1,7 @@
 using Astari25.Models;
 using Astari25.ViewModels;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace Astari25.Views;
@@ -27,6 +29,19 @@ public partial class GamePage : ContentPage
         _gameTimer = new System.Timers.Timer(16); // back to 60fps
         _gameTimer.Elapsed += OnGameLoop;
         _gameTimer.Start();
+
+        if (DeviceInfo.Platform == DevicePlatform.WinUI) { 
+            ShowWindowControlsPopup();
+        }
+    }
+
+    private async void ShowWindowControlsPopup() {
+
+        await MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+
+            await DisplayAlert("Controls", "Use Arrow Keys to Move, Up arrow to Shoot", "OK");
+        });
     }
 
     private async void OnGameLoop(object sender, ElapsedEventArgs e)
