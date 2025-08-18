@@ -21,6 +21,11 @@ namespace Astari25.ViewModels
         public float CanvasWidth { get; set; } = 300f;
         public float CanvasHeight { get; set; } = 300f;
 
+        // stop spamming bullet
+        public int MaxBulletsOnScreen { get; set; } = 5;
+        TimeSpan _fireCooldown = TimeSpan.FromMilliseconds(150);
+        DateTime _nextShotAtUtc = DateTime.MinValue;
+
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
 
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
@@ -41,6 +46,20 @@ namespace Astari25.ViewModels
             // padding
             float bottomPadding = 35f;
             Player.Y = CanvasHeight - bottomPadding - Player.Radius;
+        }
+
+        public bool TryShoot(DateTime nowUtc) {
+
+            if (nowUtc < _nextShotAtUtc) {
+                return false;
+            }
+            if (Bullets.Count >= MaxBulletsOnScreen) {
+                return false;
+            }
+
+            Bullets.Add(new Bullet(Player.X, Player.Y));
+            _nextShotAtUtc = nowUtc + _fireCooldown;
+            return true;
         }
 
 
