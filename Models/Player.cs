@@ -33,8 +33,8 @@ namespace Astari25.Models
         }
 
         public float HorizontalSpeed { get; set; } = 0;
-        public float InputX { get; set; } = 0f; // slider can 1 up or down
-        public float VelocityX { get; set; } = 0f;
+        public float InputX { get; set; } = 0f; // slider can 1 up or down 1
+        public float VelocityX { get; set; } = 0.3f;
         public float Acceleration { get; set; } = 0.3f;
         public float MaxSpeed { get; set; } = 6f;
 
