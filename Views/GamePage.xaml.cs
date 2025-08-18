@@ -33,7 +33,7 @@ public partial class GamePage : ContentPage
         _gameTimer.Elapsed += OnGameLoop;
         _gameTimer.Start();
 
-        // Windows-only: show controls popup
+        // Windows Only: popup
         if (DeviceInfo.Platform == DevicePlatform.WinUI)
             ShowWindowControlsPopup();
     }
@@ -94,7 +94,7 @@ public partial class GamePage : ContentPage
         Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
     }
 
-    
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -105,6 +105,7 @@ public partial class GamePage : ContentPage
         var nativeWindow = this.Window?.Handler?.PlatformView as Microsoft.UI.Xaml.Window;
         if (nativeWindow?.Content is UIElement root)
         {
+            // Hook up to windows root element
             root.KeyDown += OnKeyDown;
             root.KeyUp += OnKeyUp;
         }
@@ -122,8 +123,9 @@ public partial class GamePage : ContentPage
         var nativeWindow = this.Window?.Handler?.PlatformView as Microsoft.UI.Xaml.Window;
         if (nativeWindow?.Content is UIElement root)
         {
+            // unhook from button press
             root.KeyDown -= OnKeyDown;
-            root.KeyUp -= OnKeyUp;
+            root.KeyUp   -= OnKeyUp;
         }
     }
     #endif
@@ -131,24 +133,42 @@ public partial class GamePage : ContentPage
         _gameTimer?.Stop();
         _gameTimer?.Dispose();
     }
-
     #if WINDOWS
-    
     private void OnKeyDown(object sender, KeyRoutedEventArgs e)
     {
-        Console.WriteLine($"Key down: {e.Key}");
         
+        switch (e.Key)
+        {
+            case Windows.System.VirtualKey.Left:
+            case Windows.System.VirtualKey.A:
+                _viewModel.Player.InputX = -1f; 
+                break;
+
+            case Windows.System.VirtualKey.Right:
+            case Windows.System.VirtualKey.D:
+                _viewModel.Player.InputX = 1f;  break;
+
+            case Windows.System.VirtualKey.Up:
+            case Windows.System.VirtualKey.S:
+                var bullet = new Bullet(_viewModel.Player.X, _viewModel.Player.Y);
+                _viewModel.Bullets.Add(bullet);
+                break;
+        }
+        Console.WriteLine($"Key down: {e.Key}");
     }
 
-    
     private void OnKeyUp(object sender, KeyRoutedEventArgs e)
     {
+        if (e.Key is Windows.System.VirtualKey.Left or Windows.System.VirtualKey.Right
+                     or Windows.System.VirtualKey.A    or Windows.System.VirtualKey.D)
+        {
+            _viewModel.Player.InputX = 0f;
+        }
         Console.WriteLine($"Key up: {e.Key}");
-        
     }
     #endif
 
-    
+
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
         var v = (float)e.NewValue;
