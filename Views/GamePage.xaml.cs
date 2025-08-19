@@ -1,3 +1,12 @@
+// File used for:
+// - Wire the view model, set Drawable so we can print to screen, tracks the size of canvas
+// - Runs the UI Game Loop
+// - Handles the Windows Keyboard touches and the Touch screen controls for Android
+// Issues that should be made aware:
+// - Itialize after layout: UI first then logic
+// - Checking For Null has been an issue. And padding sizes indexing issues
+// - Invalidate() goes after Update()
+
 using Astari25.Models;
 using Astari25.ViewModels;
 
