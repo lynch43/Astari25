@@ -1,11 +1,17 @@
 ﻿// File used for:
 // - Game State and Rules of game
-// - Enemies , Player, Bullets / Enemies, Score, Spawn, Collisions
+// - Owns Enemies , Player, Bullets / Enemies, Score, Spawn, Collisions
 // - Update() runs on UI Thread set to a timer ( IDispatcherTimer ) 
 // - ObservableCollections get changed safely throught the game loop
 // - Input: Player input ( Player.InputX ) from page.
 // - Shooting via TryShoot() (cooldown with limited bullets over time)
 
+// - Single source of truth for the game. The View binds to this MVVM
+// - Creates the IDrawable / GameRenderer but draw doesn't happen here.
+//   It happens in the Renderer
+
+// - GraphicsView reads from the colelctions when it draws
+// Any list that should be changed is using .ToList() to avoid errors
 
 using Astari25.Views;
 using Astari25.Models;
@@ -21,37 +27,56 @@ namespace Astari25.ViewModels
 {
     public class GamePageViewModel : INotifyPropertyChanged
     {
+        // Player state, position, velocity, lives, score parameters are all in Player
         public Player Player { get; } = new Player();
+
+        // Renderer that the view plufs into, pure drawing no logic stuff
         public IDrawable GameDrawable { get; }
 
+        // how quick everything spawns  NOT FINISHED
         private int _framesInBetweenSpawns;
         private int FramesPerSpawn => GetSpawnRateFromDifficulty();
 
+        // Canvas Bounds, set by the page after layout
+        // Used for clamping player in place and where enemies can spawn
         public float CanvasWidth { get; set; } = 300f;
         public float CanvasHeight { get; set; } = 300f;
 
-        public int MaxBulletsOnScreen { get; set; } = 5;
-        TimeSpan _fireCooldown = TimeSpan.FromMilliseconds(180);
-        DateTime _nextShotAtUtc = DateTime.MinValue;
+        // Shooting Rules
+        public int MaxBulletsOnScreen { get; set; } = 5; // capped to stop spamming
+        TimeSpan _fireCooldown = TimeSpan.FromMilliseconds(180); // amount of time between shots
+        DateTime _nextShotAtUtc = DateTime.MinValue; // when bullet is available to be shot
 
+
+        // These are live collections
+        // They are constantly being observed by the View
         public ObservableCollection<Bullet> Bullets { get; } = new ObservableCollection<Bullet>();
         public ObservableCollection<Enemy> Enemies { get; } = new ObservableCollection<Enemy>();
         public ObservableCollection<Explosion> Explosions { get; } = new();
         public ObservableCollection<KillConfirmed> KillPopups { get; } = new();
 
+
+        // Construct and wire with live state references
         public GamePageViewModel()
         {
             GameDrawable = new GameRenderer(Player, Bullets, Enemies, Explosions, KillPopups, PlayPad);
         }
 
+        // - Visual margin used for play area and Clamping
         public float PlayPad { get; set; } = 24f;
-
+        
+        // - Places player at bottom of canvas with a small padding
         public void SetPlayerAtBottom()
         {
             float bottomPadding = 35f;
             Player.Y = CanvasHeight - bottomPadding - Player.Radius;
         }
 
+
+        // - Used to limit parameters of shooting
+        // - Like a gate before a shot is made
+        // - Enforces on screen buller cap
+        // - Purnes off screen bullets first so the cap is actual bullets
         public bool TryShoot(DateTime nowUtc)
         {
             if (nowUtc < _nextShotAtUtc) return false;
@@ -64,6 +89,7 @@ namespace Astari25.ViewModels
             return true;
         }
 
+        // Remove bullets that have gone above the screen to keep the list from getting too big
         private void PruneBullets()
         {
             for (int i = Bullets.Count - 1; i >= 0; i--)
@@ -73,8 +99,10 @@ namespace Astari25.ViewModels
             }
         }
 
+        // Game over flag. checked on the page to ensure the game should still be running
         public bool IsGameOver { get; set; } = false;
 
+        // Use this event handler for bindable stuff like Score
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -82,6 +110,7 @@ namespace Astari25.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        // Score property . lets the ui know
         private int _score;
         public int Score
         {
@@ -96,6 +125,17 @@ namespace Astari25.ViewModels
             }
         }
 
+        // One frame of game logic and this is called
+        // Order: 
+        // 1) Exit on repeat until canvas has an actual width. stops the clamp from being thrown off
+        // 2) Check lives => Game over
+        // 3) Bullets can be iterated
+        // 4) Move player from the input taking into acocunt the , acceleration, valocity, clamp
+        // 5) Bullet to enemy collision , then score -> explosions -> kill popups, removal
+        // 6) Enemies can move, collisions, score pop uup
+        // 7) Escape and player collisions, lose a live + remove.
+        // 8) Spawn new enemies by difficulty
+        // 9) check game over. clamp again to avoid player movement
         public void Update()
         {
             if (CanvasWidth < Player.Radius * 2) return;
@@ -113,6 +153,8 @@ namespace Astari25.ViewModels
             var bulletsToRemove = new List<Bullet>();
             var enemiesToRemove = new List<Enemy>();
 
+
+            // Movement : input => input => acceleration => velocity => if input is near zero then friction
             Player.VelocityX += Player.InputX * Player.Acceleration;
             Player.VelocityX = Math.Clamp(Player.VelocityX, -Player.MaxSpeed, Player.MaxSpeed);
 
@@ -125,12 +167,14 @@ namespace Astari25.ViewModels
             Player.X += Player.VelocityX;
             ClampPlayerToCanvas();
 
+            // Bullet hit enemy collisions
             foreach (var bullet in Bullets)
             {
                 foreach (var enemy in Enemies)
                 {
                     if (IsColliding(bullet.X, bullet.Y, 5, enemy.X, enemy.Y, enemy.Radius))
                     {
+                        // neew to collect removals otherwise you get iterating errors
                         bulletsToRemove.Add(bullet);
                         enemiesToRemove.Add(enemy);
 
