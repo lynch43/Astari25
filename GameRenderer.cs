@@ -1,4 +1,9 @@
-﻿using System;
+﻿// File used for:
+// IDrawable is made here
+// Popups also rendered here from the View Model Data
+// Draw Method here that dictates what all entities on screen look like
+
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Maui.Graphics;

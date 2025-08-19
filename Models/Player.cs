@@ -1,4 +1,10 @@
-﻿using System.ComponentModel;
+﻿// File used for:
+// State of Player at the time
+// Movement settings
+// Acceleration, Max Speed, Dead Zone, Friction
+// Lives and Score will be rendered here from the View Model data
+
+using System.ComponentModel;
 
 namespace Astari25.Models
 {
