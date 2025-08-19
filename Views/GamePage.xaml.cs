@@ -1,6 +1,5 @@
 using Astari25.Models;
 using Astari25.ViewModels;
-using System.Timers;
 
 #if WINDOWS
 using Microsoft.UI.Input;
@@ -13,9 +12,8 @@ namespace Astari25.Views;
 public partial class GamePage : ContentPage
 {
     private readonly GamePageViewModel _viewModel;
-    private readonly System.Timers.Timer _gameTimer;
+    private IDispatcherTimer? _uiTimer;
     private bool _popupShown = false;
-    private bool _pageLoaded = false;
 
     public GamePage()
     {
@@ -24,142 +22,119 @@ public partial class GamePage : ContentPage
         _viewModel = new GamePageViewModel();
         BindingContext = _viewModel;
 
-        this.Loaded += OnPageLoaded;
-
-        _gameTimer = new System.Timers.Timer(16);
-        _gameTimer.Elapsed += OnGameLoop;
-
-        if (DeviceInfo.Platform == DevicePlatform.WinUI)
-            ShowWindowControlsPopup();
-    }
-
-    private void OnPageLoaded(object? sender, EventArgs e)
-    {
-        _pageLoaded = true;
-
-        if (GameCanvas != null)
+        Dispatcher.Dispatch(() =>
         {
-            GameCanvas.SizeChanged += OnCanvasSizeChanged;
-
-            if (_viewModel.GameDrawable != null)
+            if (GameCanvas != null)
+            {
+                GameCanvas.SizeChanged += OnCanvasSizeChanged;
                 GameCanvas.Drawable = _viewModel.GameDrawable;
 
-            _viewModel.CanvasWidth = (float)GameCanvas.Width;
-            _viewModel.CanvasHeight = (float)GameCanvas.Height;
+                _viewModel.CanvasWidth = (float)GameCanvas.Width;
+                _viewModel.CanvasHeight = (float)GameCanvas.Height;
+                _viewModel.SetPlayerAtBottom();
+                _viewModel.ClampPlayerToCanvas();
+            }
 
-            _viewModel.SetPlayerAtBottom();
-            _viewModel.ClampPlayerToCanvas();
-        }
+            _uiTimer = Dispatcher.CreateTimer();
+            _uiTimer.Interval = TimeSpan.FromMilliseconds(16); // ~60 fps
+            _uiTimer.Tick += (_, __) => Tick();
+            _uiTimer.Start();
+        });
 
-        _gameTimer.Start();
+#if WINDOWS
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            ShowWindowControlsPopup();
+#endif
     }
 
+#if WINDOWS
     private async void ShowWindowControlsPopup()
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
-        {
-            await DisplayAlert("Controls", "Use Left/Right arrows to Move, Up arrow to Shoot", "OK");
-        });
+            await DisplayAlert("Controls", "Use Left/Right arrows to Move, Up arrow to Shoot", "OK"));
     }
+#endif
 
-    private async void OnGameLoop(object sender, ElapsedEventArgs e)
+    private async void Tick()
     {
-        if (!_pageLoaded) return;
+        // Everything on UI thread
+#if WINDOWS
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+        {
+            static bool IsDown(VirtualKey k) =>
+                (InputKeyboardSource.GetKeyStateForCurrentThread(k) &
+                 CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
+
+            bool left  = IsDown(VirtualKey.Left)  || IsDown(VirtualKey.A);
+            bool right = IsDown(VirtualKey.Right) || IsDown(VirtualKey.D);
+            bool shoot = IsDown(VirtualKey.Up)    || IsDown(VirtualKey.S);
+
+            _viewModel.Player.InputX = left ? -1f : right ? 1f : 0f;
+
+            if (shoot)
+                _viewModel.TryShoot(DateTime.UtcNow);
+
+            if (_viewModel.Player.InputX != 0f)
+            {
+                _viewModel.Player.X += _viewModel.Player.MaxSpeed * _viewModel.Player.InputX;
+                _viewModel.ClampPlayerToCanvas();
+            }
+        }
+#endif
 
         _viewModel.Update();
 
-        MainThread.BeginInvokeOnMainThread(async () =>
+        GameCanvas?.Invalidate();
+
+        if (_viewModel.IsGameOver && !_popupShown)
         {
-            if (_viewModel.Player == null || _viewModel.Bullets == null)
-                return;
+            _popupShown = true;
+            _uiTimer?.Stop();
 
-#if WINDOWS
-            if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            bool restart = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Main Menu");
+            if (restart)
             {
-                static bool IsDown(VirtualKey k) =>
-                    (InputKeyboardSource.GetKeyStateForCurrentThread(k) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
-
-                bool left  = IsDown(VirtualKey.Left)  || IsDown(VirtualKey.A);
-                bool right = IsDown(VirtualKey.Right) || IsDown(VirtualKey.D);
-                bool shoot = IsDown(VirtualKey.Up)    || IsDown(VirtualKey.S);
-
-                _viewModel.Player.InputX = left ? -1f : right ? 1f : 0f;
-
-                if (shoot)
-                    _viewModel.TryShoot(DateTime.UtcNow);
-
-                if (_viewModel.Player.InputX != 0f)
-                {
-                    _viewModel.Player.X += _viewModel.Player.MaxSpeed * _viewModel.Player.InputX;
-                    _viewModel.ClampPlayerToCanvas();
-                }
+                _viewModel.Reset();
+                _popupShown = false;
+                _uiTimer?.Start();
             }
-#endif
-            if (GameCanvas == null) return;
-            GameCanvas.Invalidate();
-
-            if (_viewModel.IsGameOver && !_popupShown)
+            else
             {
-                _popupShown = true;
-                _gameTimer.Stop();
-
-                bool result = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Main Menu");
-                if (result)
-                {
-                    _viewModel.Reset();
-                    _popupShown = false;
-                    _gameTimer.Start();
-                }
-                else
-                {
-                    _gameTimer.Stop();
-                    await Shell.Current.GoToAsync("StartPage");
-                }
+                _uiTimer?.Stop();
+                await Shell.Current.GoToAsync("StartPage");
             }
-        });
+        }
     }
 
-    private void OnCanvasSizeChanged(object sender, EventArgs e)
+    private void OnCanvasSizeChanged(object? sender, EventArgs e)
     {
         if (GameCanvas == null) return;
 
         float width = (float)GameCanvas.Width;
-
+#if WINDOWS
         if (DeviceInfo.Platform == DevicePlatform.WinUI && width > 800f)
             width = 800f;
-
+#endif
         _viewModel.CanvasWidth = width;
         _viewModel.CanvasHeight = (float)GameCanvas.Height;
 
         _viewModel.SetPlayerAtBottom();
         _viewModel.ClampPlayerToCanvas();
-
-        Console.WriteLine($"Canvas Width update: {_viewModel.CanvasWidth}");
-    }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-
-        this.Loaded -= OnPageLoaded;
         if (GameCanvas != null)
             GameCanvas.SizeChanged -= OnCanvasSizeChanged;
-
-        _gameTimer?.Stop();
-        _gameTimer?.Dispose();
+        _uiTimer?.Stop();
+        _uiTimer = null;
     }
 
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
         var v = (float)e.NewValue;
-        if (Math.Abs(v) < _viewModel.Player.DeadZone)
-            v = 0f;
-
+        if (Math.Abs(v) < _viewModel.Player.DeadZone) v = 0f;
         _viewModel.Player.InputX = v;
     }
 
@@ -175,8 +150,7 @@ public partial class GamePage : ContentPage
                 var dx = Math.Clamp(e.TotalX, -_panMax, _panMax);
                 _viewModel.Player.InputX = (float)(dx / _panMax);
                 break;
-            case GestureStatus.Completed:
-            case GestureStatus.Canceled:
+            default:
                 _viewModel.Player.InputX = 0f;
                 break;
         }
