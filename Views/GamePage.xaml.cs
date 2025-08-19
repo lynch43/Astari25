@@ -15,6 +15,7 @@ public partial class GamePage : ContentPage
     private readonly GamePageViewModel _viewModel;
     private readonly System.Timers.Timer _gameTimer;
     private bool _popupShown = false;
+    private bool _pageLoaded = false;
 
     public GamePage()
     {
@@ -27,7 +28,6 @@ public partial class GamePage : ContentPage
 
         _gameTimer = new System.Timers.Timer(16);
         _gameTimer.Elapsed += OnGameLoop;
-        _gameTimer.Start();
 
         if (DeviceInfo.Platform == DevicePlatform.WinUI)
             ShowWindowControlsPopup();
@@ -35,18 +35,23 @@ public partial class GamePage : ContentPage
 
     private void OnPageLoaded(object? sender, EventArgs e)
     {
-        if (GameCanvas == null) return;
+        _pageLoaded = true;
 
-        GameCanvas.SizeChanged += OnCanvasSizeChanged;
+        if (GameCanvas != null)
+        {
+            GameCanvas.SizeChanged += OnCanvasSizeChanged;
 
-        if (_viewModel.GameDrawable != null)
-            GameCanvas.Drawable = _viewModel.GameDrawable;
+            if (_viewModel.GameDrawable != null)
+                GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        _viewModel.CanvasWidth = (float)GameCanvas.Width;
-        _viewModel.CanvasHeight = (float)GameCanvas.Height;
+            _viewModel.CanvasWidth = (float)GameCanvas.Width;
+            _viewModel.CanvasHeight = (float)GameCanvas.Height;
 
-        _viewModel.SetPlayerAtBottom();
-        _viewModel.ClampPlayerToCanvas();
+            _viewModel.SetPlayerAtBottom();
+            _viewModel.ClampPlayerToCanvas();
+        }
+
+        _gameTimer.Start();
     }
 
     private async void ShowWindowControlsPopup()
@@ -59,6 +64,8 @@ public partial class GamePage : ContentPage
 
     private async void OnGameLoop(object sender, ElapsedEventArgs e)
     {
+        if (!_pageLoaded) return;
+
         _viewModel.Update();
 
         MainThread.BeginInvokeOnMainThread(async () =>
