@@ -1,7 +1,26 @@
 ﻿// File used for:
-// IDrawable is made here
-// Popups also rendered here from the View Model Data
-// Draw Method here that dictates what all entities on screen look like
+// - IDrawable is made here
+// - Popups also rendered here from the View Model Data
+// - Draw Method here that dictates what all entities on screen look like
+
+// - Readonly. no game rules or anything. It pulls state from the View Model collections
+// - All the entities get painted over the ICanvas ( Player, poups etc. )
+// - Everything needs to be called every frame in the timer so it needs to be accessible during all logic
+// 
+
+// - Created once every call of GamePageViewModel
+// - View Model creates it and passes its own data
+// - GraphicsView calls Draw() every time that Invalidate() from the game loop
+
+// - All Collections get changed only on the UI thread by the View Model
+// - This class only reads a screenshot of the information. Avoids enumeration issues. 
+// - Everything is using .ToList() to fix the enumeration problem
+
+// Layout:
+// - ( 0,0 ) is top left of GraphicsView
+// - _playPaf adds a visual + logical margin around the play area
+// - Player.X/Y etc. are already in view coordinates
+// View Model we know has correct info all the time
 
 using System;
 using System.Collections.ObjectModel;
@@ -13,6 +32,14 @@ namespace Astari25.Views
 {
     public class GameRenderer : IDrawable
     {
+        // Information here is owned by View Model
+        // - _player: single ship shaped as triangle
+        // - _bullets: yellow sicrles that travel up
+        // - _enemies: red cirles that travel down
+        // - _explosions: circle that stays still where enemies die
+        // - _killPopups: floating score notifier text near the hit
+        // - _playPad: padding used as a visual margin. also dictates where border goes
+
         private readonly Player _player;
         private readonly ObservableCollection<Bullet> _bullets;
         private readonly ObservableCollection<Enemy> _enemies;
