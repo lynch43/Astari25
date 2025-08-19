@@ -192,9 +192,11 @@ namespace Astari25.ViewModels
             foreach (var enemy in enemiesToRemove)
                 Enemies.Remove(enemy);
 
+            // Advance the enemy list 
             foreach (var enemy in Enemies.ToList())
                 enemy.Update();
 
+            // Advance the explosion and then remove anyone that is finished
             foreach (var exp in Explosions.ToList())
             {
                 exp.Update();
@@ -207,6 +209,8 @@ namespace Astari25.ViewModels
                 if (kc.IsDone) KillPopups.Remove(kc);
             }
 
+            // Enemies that made it past the player 
+            // Lose live and then remove the enemy from colelction
             var escapedEnemies = new List<Enemy>();
             foreach (var enemy in Enemies)
             {
@@ -218,6 +222,8 @@ namespace Astari25.ViewModels
             }
             foreach (var enemy in escapedEnemies)
                 Enemies.Remove(enemy);
+
+            // Enemy Player collide => lose a life and remove the enemy
 
             foreach (var enemy in Enemies.ToList())
             {
@@ -232,6 +238,8 @@ namespace Astari25.ViewModels
                 }
             }
 
+
+            // Spanw changes by difficulty set in the settings page
             _framesInBetweenSpawns++;
             if (_framesInBetweenSpawns >= FramesPerSpawn)
             {
@@ -260,6 +268,7 @@ namespace Astari25.ViewModels
             ClampPlayerToCanvas();
         }
 
+        // Reset to a fresh run. Anything that changes value her will be reset to its default value
         public void Reset()
         {
             Score = 0;
@@ -274,6 +283,7 @@ namespace Astari25.ViewModels
             IsGameOver = false;
         }
 
+        // Maps difficulty string fed in from preference to a spawn interval in frames
         private int GetSpawnRateFromDifficulty()
         {
             var diff = Preferences.Get(nameof(AppSettings.Difficulty), "Normal");
@@ -286,18 +296,22 @@ namespace Astari25.ViewModels
             };
         }
 
-        private float GetEnemySpeedMultiplier()
-        {
-            var diff = Preferences.Get(nameof(AppSettings.Difficulty), "Normal");
-            return diff switch
-            {
-                "Easy" => 0.7f,
-                "Normal" => 1f,
-                "Hard" => 1.4f,
-                _ => 1f
-            };
-        }
+        // Not using this in Update(), removed because of other errors for Debug
+        //private float GetEnemySpeedMultiplier()
+        //{
+        //    var diff = Preferences.Get(nameof(AppSettings.Difficulty), "Normal");
+        //    return diff switch
+        //    {
+        //        "Easy" => 0.7f,
+        //        "Normal" => 1f,
+        //        "Hard" => 1.4f,
+        //        _ => 1f
+        //    };
+        //}
 
+
+        // Keep the player inside the horizontal play area
+        // Guards against early layout where min can exceed max where CanvasWidth wasn't ready for values
         public void ClampPlayerToCanvas()
         {
             float min = PlayPad + Player.Radius;
@@ -313,6 +327,8 @@ namespace Astari25.ViewModels
             Player.X = Math.Clamp(Player.X, PlayPad + Player.Radius, CanvasWidth - PlayPad - Player.Radius);
         }
 
+
+        // Circle / Circle collisions using sqwuared distance
         private bool IsColliding(float x1, float y1, float r1, float x2, float y2, float r2)
         {
             float dx = x1 - x2;
