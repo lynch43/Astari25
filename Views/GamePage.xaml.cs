@@ -20,20 +20,10 @@ public partial class GamePage : ContentPage
     {
         InitializeComponent();
 
-        if (GameCanvas != null) {
-            GameCanvas.SizeChanged += OnCanvasSizeChanged;
-            if (_viewModel.GameDrawable != null)
-                GameCanvas.Drawable = _viewModel.GameDrawable;
-
-            _viewModel.CanvasWidth = (float)GameCanvas.Width;
-        }
-        
-
         _viewModel = new GamePageViewModel();
         BindingContext = _viewModel;
-        GameCanvas.Drawable = _viewModel.GameDrawable;
 
-        _viewModel.CanvasWidth = (float)GameCanvas.Width;
+        this.Loaded += OnPageLoaded;
 
         _gameTimer = new System.Timers.Timer(16);
         _gameTimer.Elapsed += OnGameLoop;
@@ -41,6 +31,22 @@ public partial class GamePage : ContentPage
 
         if (DeviceInfo.Platform == DevicePlatform.WinUI)
             ShowWindowControlsPopup();
+    }
+
+    private void OnPageLoaded(object? sender, EventArgs e)
+    {
+        if (GameCanvas == null) return;
+
+        GameCanvas.SizeChanged += OnCanvasSizeChanged;
+
+        if (_viewModel.GameDrawable != null)
+            GameCanvas.Drawable = _viewModel.GameDrawable;
+
+        _viewModel.CanvasWidth = (float)GameCanvas.Width;
+        _viewModel.CanvasHeight = (float)GameCanvas.Height;
+
+        _viewModel.SetPlayerAtBottom();
+        _viewModel.ClampPlayerToCanvas();
     }
 
     private async void ShowWindowControlsPopup()
@@ -57,10 +63,9 @@ public partial class GamePage : ContentPage
 
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            // bail out if this is null and try again
-            if (_viewModel.Player == null || _viewModel.Bullets == null) {
+            if (_viewModel.Player == null || _viewModel.Bullets == null)
                 return;
-            }
+
 #if WINDOWS
             if (DeviceInfo.Platform == DevicePlatform.WinUI)
             {
@@ -74,10 +79,7 @@ public partial class GamePage : ContentPage
                 _viewModel.Player.InputX = left ? -1f : right ? 1f : 0f;
 
                 if (shoot)
-                {
-                    //_viewModel.Bullets.Add(new Bullet(_viewModel.Player.X, _viewModel.Player.Y));
                     _viewModel.TryShoot(DateTime.UtcNow);
-                }
 
                 if (_viewModel.Player.InputX != 0f)
                 {
@@ -88,7 +90,6 @@ public partial class GamePage : ContentPage
 #endif
             if (GameCanvas == null) return;
             GameCanvas.Invalidate();
-            
 
             if (_viewModel.IsGameOver && !_popupShown)
             {
@@ -113,6 +114,8 @@ public partial class GamePage : ContentPage
 
     private void OnCanvasSizeChanged(object sender, EventArgs e)
     {
+        if (GameCanvas == null) return;
+
         float width = (float)GameCanvas.Width;
 
         if (DeviceInfo.Platform == DevicePlatform.WinUI && width > 800f)
@@ -135,6 +138,11 @@ public partial class GamePage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+
+        this.Loaded -= OnPageLoaded;
+        if (GameCanvas != null)
+            GameCanvas.SizeChanged -= OnCanvasSizeChanged;
+
         _gameTimer?.Stop();
         _gameTimer?.Dispose();
     }
@@ -181,7 +189,6 @@ public partial class GamePage : ContentPage
 
     private void OnShootClicked(object sender, EventArgs e)
     {
-        //var bullet = new Bullet(_viewModel.Player.X, _viewModel.Player.Y);
         _viewModel.TryShoot(DateTime.UtcNow);
     }
 }
