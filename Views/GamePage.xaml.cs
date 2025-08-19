@@ -7,6 +7,7 @@
 // - Checking For Null has been an issue. And padding sizes indexing issues
 // - Invalidate() goes after Update()
 
+
 using Astari25.Models;
 using Astari25.ViewModels;
 
