@@ -247,6 +247,16 @@ namespace Astari25.ViewModels
 
         public void ClampPlayerToCanvas()
         {
+            float min = PlayPad + Player.Radius;
+            float max = CanvasWidth - PlayPad - Player.Radius;
+
+            
+            if (CanvasWidth <= 0 || max <= min)
+            {
+                
+                Player.X = CanvasWidth > 0 ? CanvasWidth * 0.5f : min;
+                return;
+            }
             Player.X = Math.Clamp(Player.X, PlayPad + Player.Radius, CanvasWidth - PlayPad - Player.Radius);
         }
 

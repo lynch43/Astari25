@@ -9,7 +9,7 @@
     </ContentPage.BindingContext>
 
     <Grid>
-        <Image Source="space_bg.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
+        <Image Source="background.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
         <BoxView Color="Black" Opacity="0.7" HorizontalOptions="Fill" VerticalOptions="Fill"/>
 
         <Grid Padding="24">

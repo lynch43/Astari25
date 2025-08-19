@@ -4,7 +4,7 @@
              x:Class="Astari25.Views.StartPage">
 
     <Grid>
-        <Image Source="space_bg.jpg"
+        <Image Source="background.jpg"
            Aspect="AspectFill"
            HorizontalOptions="Fill"
            VerticalOptions="Fill"

@@ -4,7 +4,7 @@
              x:Class="Astari25.Views.GamePage">
 
     <Grid>
-        <Image Source="space_bg.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
+        <Image Source="background.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
         <BoxView Color="Black" Opacity="0.8" HorizontalOptions="Fill" VerticalOptions="Fill"/>
 
         <Grid Padding="12" RowSpacing="12" RowDefinitions="Auto,Auto,*,Auto">
