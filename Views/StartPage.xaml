@@ -2,28 +2,72 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Astari25.Views.StartPage"
-             Title="Astari25"
-             BackgroundColor="Black">
+             Title="Astari25">
 
-    <VerticalStackLayout Padding="20" Spacing="25" HorizontalOptions="Center" VerticalOptions="Center">
+    <Grid>
+        
+        <Image Source="space_bg.jpg"
+               Aspect="AspectFill"
+               InputTransparent="True" />
 
-        <Label Text="ASTARI 25"
-               FontSize="36"
-               FontAttributes="Bold"
-               TextColor="White"
-               HorizontalOptions="Center"/>
+        
+        <BoxView Color="#000000AA" />
 
-        <Button Text="Start Game"
-                Clicked="OnStartGameClicked"
-                BackgroundColor="#444"
-                TextColor="White"
-                WidthRequest="180"/>
+        
+        <Grid Padding="24"
+              RowDefinitions="*,Auto,*">
+            <Border Grid.Row="1"
+                    BackgroundColor="Black"
+                    Stroke="Yellow"
+                    StrokeThickness="1"
+                    Padding="24"
+                    HorizontalOptions="Center"
+                    WidthRequest="{OnPlatform WinUI=420, Android=320, iOS=320}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Opacity="0.5" Radius="18" />
+                </Border.Shadow>
 
-        <Button Text="Settings"
-                Clicked="OnSettingsClicked"
-                BackgroundColor="#555"
-                TextColor="White"
-                WidthRequest="180"/>
+                <VerticalStackLayout Spacing="18" HorizontalOptions="Center">
+                    <Label Text="ASTARI 25"
+                           FontSize="44"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center"/>
 
-    </VerticalStackLayout>
+                    <Label Text="Arcade shooter • Dodge. Aim. Survive."
+                           FontSize="14"
+                           TextColor="#C9C9D6"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,0,0,8"/>
+
+                    <Button Text="Start Game"
+                            Clicked="OnStartGameClicked"
+                            HeightRequest="52"
+                            CornerRadius="14"
+                            BackgroundColor="#6C63FF"
+                            TextColor="White"
+                            FontAttributes="Bold" />
+
+                    <Button Text="Settings"
+                            Clicked="OnSettingsClicked"
+                            HeightRequest="52"
+                            CornerRadius="14"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            BorderColor="#FFFFFF66"
+                            BorderWidth="1" />
+
+                    
+                    <Label Text="Tip: On Windows use A/D or ←/→ to move, S or ↑ to shoot"
+                           FontSize="12"
+                           TextColor="#AEB0C2"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,8,0,0"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
 </ContentPage>

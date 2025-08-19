@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Astari25.ViewModels"
              x:Class="Astari25.Views.GamePage"
-             BackgroundColor="Black">
+             BackgroundColor="Black"
+             BackgroundImageSource="space_bg.jpg">
+    
 
     <ContentPage.BindingContext>
         <vm:GamePageViewModel/>
