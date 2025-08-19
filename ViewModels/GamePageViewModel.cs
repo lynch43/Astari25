@@ -1,4 +1,13 @@
-﻿using Astari25.Views;
+﻿// File used for:
+// - Game State and Rules of game
+// - Enemies , Player, Bullets / Enemies, Score, Spawn, Collisions
+// - Update() runs on UI Thread set to a timer ( IDispatcherTimer ) 
+// - ObservableCollections get changed safely throught the game loop
+// - Input: Player input ( Player.InputX ) from page.
+// - Shooting via TryShoot() (cooldown with limited bullets over time)
+
+
+using Astari25.Views;
 using Astari25.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
