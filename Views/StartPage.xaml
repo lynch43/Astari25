@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Astari25.Views.StartPage"
-             Title="Astari25">
+             x:Class="Astari25.Views.StartPage">
 
     <Grid>
-        
         <Image Source="space_bg.jpg"
-               Aspect="AspectFill"
-               InputTransparent="True" />
+           Aspect="AspectFill"
+           HorizontalOptions="Fill"
+           VerticalOptions="Fill"
+           InputTransparent="True" />
 
-        
-        <BoxView Color="#000000AA" />
+        <BoxView Color="Black"
+             Opacity="0.67"
+             HorizontalOptions="Fill"
+             VerticalOptions="Fill" />
 
-        
-        <Grid Padding="24"
-              RowDefinitions="*,Auto,*">
+        <Grid Padding="24" RowDefinitions="*,Auto,*">
             <Border Grid.Row="1"
-                    BackgroundColor="Black"
-                    Stroke="Yellow"
-                    StrokeThickness="1"
-                    Padding="24"
-                    HorizontalOptions="Center"
-                    WidthRequest="{OnPlatform WinUI=420, Android=320, iOS=320}">
+              BackgroundColor="Black"
+              Stroke="Yellow"
+              StrokeThickness="1"
+              Padding="24"
+              HorizontalOptions="Center"
+              WidthRequest="{OnPlatform WinUI=420, Android=320, iOS=320}">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="16"/>
                 </Border.StrokeShape>
@@ -32,40 +32,39 @@
 
                 <VerticalStackLayout Spacing="18" HorizontalOptions="Center">
                     <Label Text="ASTARI 25"
-                           FontSize="44"
-                           FontAttributes="Bold"
-                           TextColor="White"
-                           HorizontalTextAlignment="Center"/>
+                 FontSize="44"
+                 FontAttributes="Bold"
+                 TextColor="White"
+                 HorizontalTextAlignment="Center"/>
 
                     <Label Text="Arcade shooter • Dodge. Aim. Survive."
-                           FontSize="14"
-                           TextColor="#C9C9D6"
-                           HorizontalTextAlignment="Center"
-                           Margin="0,0,0,8"/>
+                 FontSize="14"
+                 TextColor="LightGray"
+                 HorizontalTextAlignment="Center"
+                 Margin="0,0,0,8"/>
 
                     <Button Text="Start Game"
-                            Clicked="OnStartGameClicked"
-                            HeightRequest="52"
-                            CornerRadius="14"
-                            BackgroundColor="#6C63FF"
-                            TextColor="White"
-                            FontAttributes="Bold" />
+                  Clicked="OnStartGameClicked"
+                  HeightRequest="52"
+                  CornerRadius="14"
+                  BackgroundColor="Purple"
+                  TextColor="White"
+                  FontAttributes="Bold" />
 
                     <Button Text="Settings"
-                            Clicked="OnSettingsClicked"
-                            HeightRequest="52"
-                            CornerRadius="14"
-                            BackgroundColor="Transparent"
-                            TextColor="White"
-                            BorderColor="#FFFFFF66"
-                            BorderWidth="1" />
+                  Clicked="OnSettingsClicked"
+                  HeightRequest="52"
+                  CornerRadius="14"
+                  BackgroundColor="Transparent"
+                  TextColor="White"
+                  BorderColor="White"
+                  BorderWidth="1" />
 
-                    
                     <Label Text="Tip: On Windows use A/D or ←/→ to move, S or ↑ to shoot"
-                           FontSize="12"
-                           TextColor="#AEB0C2"
-                           HorizontalTextAlignment="Center"
-                           Margin="0,8,0,0"/>
+                 FontSize="12"
+                 TextColor="LightGray"
+                 HorizontalTextAlignment="Center"
+                 Margin="0,8,0,0"/>
                 </VerticalStackLayout>
             </Border>
         </Grid>

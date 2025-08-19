@@ -2,28 +2,44 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Astari25.ViewModels"
-             x:Class="Astari25.Views.SettingsPage"
-             Title="Settings"
-             BackgroundColor="Black">
+             x:Class="Astari25.Views.SettingsPage">
+
     <ContentPage.BindingContext>
         <vm:SettingsViewModel/>
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="16" Spacing="18">
-        <Label Text="Settings" FontSize="28" TextColor="White" HorizontalOptions="Center"/>
+    <Grid>
+        <Image Source="space_bg.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
+        <BoxView Color="Black" Opacity="0.7" HorizontalOptions="Fill" VerticalOptions="Fill"/>
 
-        <HorizontalStackLayout Spacing="12">
-            <Label Text="Difficulty" TextColor="White" VerticalOptions="Center"/>
-            <Picker Title="Select" SelectedItem="{Binding Settings.Difficulty}">
-                <Picker.Items>
-                    <x:String>Easy</x:String>
-                    <x:String>Normal</x:String>
-                    <x:String>Hard</x:String>
-                </Picker.Items>
-            </Picker>
-        </HorizontalStackLayout>
+        <Grid Padding="24">
+            <VerticalStackLayout Spacing="22"
+                           Padding="24"
+                           BackgroundColor="Black"
+                           Opacity="0.85"
+                           HorizontalOptions="Center"
+                           WidthRequest="420">
+                <Label Text="Settings" FontSize="44" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
 
-        <Button Text="Save"   Command="{Binding SaveCommand}"   BackgroundColor="#444" TextColor="White"/>
-        <Button Text="Reload" Command="{Binding ReloadCommand}" BackgroundColor="#333" TextColor="White"/>
-    </VerticalStackLayout>
+                <Label Text="Difficulty" FontSize="20" TextColor="White"/>
+
+                <Picker Title="Select"
+                FontSize="20"
+                HeightRequest="56"
+                BackgroundColor="DimGray"
+                TextColor="White"
+                TitleColor="White"
+                SelectedItem="{Binding Settings.Difficulty}">
+                    <Picker.Items>
+                        <x:String>Easy</x:String>
+                        <x:String>Normal</x:String>
+                        <x:String>Hard</x:String>
+                    </Picker.Items>
+                </Picker>
+
+                <Button Text="Save" Command="{Binding SaveCommand}" HeightRequest="56" BackgroundColor="Purple" TextColor="White"/>
+                <Button Text="Reload" Command="{Binding ReloadCommand}" HeightRequest="56" BackgroundColor="Gray" TextColor="White"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>

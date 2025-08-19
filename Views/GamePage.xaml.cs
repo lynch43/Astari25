@@ -20,7 +20,14 @@ public partial class GamePage : ContentPage
     {
         InitializeComponent();
 
-        GameCanvas.SizeChanged += OnCanvasSizeChanged;
+        if (GameCanvas != null) {
+            GameCanvas.SizeChanged += OnCanvasSizeChanged;
+            if (_viewModel.GameDrawable != null)
+                GameCanvas.Drawable = _viewModel.GameDrawable;
+
+            _viewModel.CanvasWidth = (float)GameCanvas.Width;
+        }
+        
 
         _viewModel = new GamePageViewModel();
         BindingContext = _viewModel;
@@ -50,6 +57,10 @@ public partial class GamePage : ContentPage
 
         MainThread.BeginInvokeOnMainThread(async () =>
         {
+            // bail out if this is null and try again
+            if (_viewModel.Player == null || _viewModel.Bullets == null) {
+                return;
+            }
 #if WINDOWS
             if (DeviceInfo.Platform == DevicePlatform.WinUI)
             {
@@ -75,7 +86,9 @@ public partial class GamePage : ContentPage
                 }
             }
 #endif
+            if (GameCanvas == null) return;
             GameCanvas.Invalidate();
+            
 
             if (_viewModel.IsGameOver && !_popupShown)
             {
