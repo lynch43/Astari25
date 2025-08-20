@@ -1,53 +1,121 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Astari25.Views.GamePage">
+<!--
+  File used for:
+  - GamePage view XAML hosting the canvas, HUD, and touch controls
+  - Background image
+  - Cross-platform layout: Windows : keys vs Android : touch
+  - Windows hides the bottom controls (see IsVisible OnPlatform)
+  - GraphicsView renders via GameRenderer (set in code-behind)
+-->
 
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Astari25.Views.GamePage">
+
+    <!-- Root layout background image at back,  content stacked above -->
     <Grid>
-        <Image Source="background.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
-        <BoxView Color="Black" Opacity="0.8" HorizontalOptions="Fill" VerticalOptions="Fill"/>
 
-        <Grid Padding="12" RowSpacing="12" RowDefinitions="Auto,Auto,*,Auto">
-            <Label Grid.Row="0" Text="ASTARI" FontSize="38" HorizontalOptions="Center" TextColor="White"/>
+        <!-- Fullscreen background image -->
+        <Image
+            Source="background.jpg"
+            Aspect="AspectFill"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
+            InputTransparent="True" />
 
-            <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center" Spacing="40">
-                <Label Text="Lives:" FontSize="30" TextColor="White"/>
-                <Label Text="{Binding Player.Lives}" FontSize="30" TextColor="White"/>
-                <Label Text="Score:" FontSize="30" TextColor="White"/>
-                <Label Text="{Binding Score}" FontSize="30" TextColor="White"/>
+        <!-- Darken layer on top of the imagey -->
+        <BoxView
+            Color="Black"
+            Opacity="0.8"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill" />
+
+        <!-- Main content grid:
+             Row0: Title
+             Row1: HUD (Lives/Score)
+             Row2: Playfield border + GraphicsView
+             Row3: Mobile controls (hidden on Windows) -->
+        <Grid
+            Padding="12"
+            RowSpacing="12"
+            RowDefinitions="Auto,Auto,*,Auto">
+
+            <!-- Game title -->
+            <Label
+                Grid.Row="0"
+                Text="ASTARI"
+                FontSize="38"
+                HorizontalOptions="Center"
+                TextColor="White" />
+
+            <!-- HUD: Lives + Score bound to ViewModel -->
+            <HorizontalStackLayout
+                Grid.Row="1"
+                HorizontalOptions="Center"
+                Spacing="40">
+                <Label Text="Lives:" FontSize="30" TextColor="White" />
+                <Label Text="{Binding Player.Lives}" FontSize="30" TextColor="White" />
+                <Label Text="Score:" FontSize="30" TextColor="White" />
+                <Label Text="{Binding Score}" FontSize="30" TextColor="White" />
             </HorizontalStackLayout>
 
-            <Border Grid.Row="2" Stroke="White" StrokeThickness="1" Padding="0" HorizontalOptions="Center">
-                <GraphicsView x:Name="GameCanvas"
-                      BackgroundColor="Black"
-                      HorizontalOptions="Center"
-                      VerticalOptions="Fill"
-                      WidthRequest="{OnPlatform WinUI=650, Default=-1}"/>
+            <!-- Bordered play area wrapping the GraphicsView canvas
+                 Width capped on Windows via code-behind centered here -->
+            <Border
+                Grid.Row="2"
+                Stroke="White"
+                StrokeThickness="1"
+                Padding="0"
+                HorizontalOptions="Center">
+                <GraphicsView
+                    x:Name="GameCanvas"
+                    BackgroundColor="Black"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Fill"
+                    WidthRequest="{OnPlatform WinUI=650, Default=-1}" />
             </Border>
 
-            <Grid Grid.Row="3" ColumnDefinitions="*,Auto" ColumnSpacing="12" IsVisible="{OnPlatform Android=true, iOS=true, WinUI=false}">
-                <Frame x:Name="MovePad"
-               Grid.Column="0"
-               HeightRequest="90"
-               CornerRadius="12"
-               BackgroundColor="Black"
-               BorderColor="Gray"
-               HasShadow="False"
-               Padding="0">
+            <!-- Mobile touch controls (hidden on Windows via OnPlatform) -->
+            <Grid
+                Grid.Row="3"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="12"
+                IsVisible="{OnPlatform Android=true, iOS=true, WinUI=false}">
+
+                <!-- MovePad: drag left/right updates Player.InputX via code-behind -->
+                <Frame
+                    x:Name="MovePad"
+                    Grid.Column="0"
+                    HeightRequest="90"
+                    CornerRadius="12"
+                    BackgroundColor="Black"
+                    BorderColor="Gray"
+                    HasShadow="False"
+                    Padding="0">
                     <Grid>
-                        <Label Text="MOVE" TextColor="LightGray" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Label
+                            Text="MOVE"
+                            TextColor="LightGray"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
                         <Grid.GestureRecognizers>
-                            <PanGestureRecognizer PanUpdated="OnMovePadPanUpdated"/>
+                            <PanGestureRecognizer PanUpdated="OnMovePadPanUpdated" />
                         </Grid.GestureRecognizers>
                     </Grid>
                 </Frame>
 
-                <Button Grid.Column="1"
-                Text="Shoot"
-                FontSize="19"
-                HeightRequest="90"
-                WidthRequest="120"
-                Clicked="OnShootClicked"/>
+                <!-- Shoot button: -->
+                <Button
+                    Grid.Column="1"
+                    Text="Shoot"
+                    FontSize="19"
+                    HeightRequest="90"
+                    WidthRequest="120"
+                    BackgroundColor="DodgerBlue"
+                    TextColor="White"
+                    Clicked="OnShootClicked" />
             </Grid>
         </Grid>
     </Grid>
