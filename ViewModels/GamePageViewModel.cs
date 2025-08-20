@@ -22,6 +22,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Microsoft.Maui.Storage;
+//using MetalPerformanceShaders;
 
 namespace Astari25.ViewModels
 {
@@ -36,6 +37,23 @@ namespace Astari25.ViewModels
         // how quick everything spawns  NOT FINISHED
         private int _framesInBetweenSpawns;
         private int FramesPerSpawn => GetSpawnRateFromDifficulty();
+
+        // constants
+        private const int MinSpawnFrames = 24;
+        private const int BaseEnemyCap = 10;
+        private const int MaxEnemyCap = 30;
+
+
+        // difficuoloty stae, changeable
+        private DateTime _lastUpdateUtc = DateTime.MinValue;
+        private double _elapsedSecondsTotal = 0;
+
+        // Every frame
+        private int _dynamicSpawnFrames;
+        private float _speedMultiplier = 1f;
+        private int _enemySoftCap;
+
+
 
         // Canvas Bounds, set by the page after layout
         // Used for clamping player in place and where enemies can spawn
@@ -97,6 +115,25 @@ namespace Astari25.ViewModels
                 if (Bullets[i].Y < -20)
                     Bullets.RemoveAt(i);
             }
+        }
+
+        // Base difficulty is starting point and take the values from there
+        private void UpdateDifficulty() {
+            // Get value from preferences for difficulty
+            int baseSpawn = GetSpawnRateFromDifficulty();
+
+            double t = _elapsedSecondsTotal;
+
+            // time between spawns gets lower to a certain point
+            int reduction = (int)Math.Min(baseSpawn - MinSpawnFrames, t * 1.25);
+            _dynamicSpawnFrames = Math.Max(MinSpawnFrames, baseSpawn - reduction);
+
+            // enemies go faster over time
+            double speed =Math.Min(2.5, 0.9 * t / 45.0);
+            _speedMultiplier = (float)speed;
+
+            // enemy cap goes up as time goes on
+            _enemySoftCap = (int)Math.Min(MaxEnemyCap, BaseEnemyCap + Math.Floor(t / 8.0));
         }
 
         // Game over flag. checked on the page to ensure the game should still be running
@@ -281,6 +318,13 @@ namespace Astari25.ViewModels
             Enemies.Clear();
             KillPopups.Clear();
             IsGameOver = false;
+
+            _lastUpdateUtc = DateTime.MinValue;
+            _elapsedSecondsTotal = 0;
+            _framesInBetweenSpawns = 0;
+            _dynamicSpawnFrames = GetSpawnRateFromDifficulty();
+            _speedMultiplier = 1f;
+            _enemySoftCap = BaseEnemyCap;
         }
 
         // Maps difficulty string fed in from preference to a spawn interval in frames
