@@ -133,12 +133,14 @@ public partial class GamePage : ContentPage
             bool restart = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Main Menu");
 
             // Save a record of this run before reset or navigation
-            await ResultService.AppendAsync(new GameResult
-            {
-                TimestampUtc = DateTime.UtcNow,
-                Score = _viewModel.Score,
-                Difficulty = Preferences.Get(nameof(AppSettings.Difficulty), "Normal")
-            });
+            await TextResultService.AppendAsync(
+                DateTime.UtcNow,
+                _viewModel.Score,
+                Preferences.Get(nameof(AppSettings.Difficulty), "Normal")
+            );
+
+            // copy this folder path and then you can use Win+R and open the results.txt file
+            await DisplayAlert("Results file folder", FileSystem.AppDataDirectory, "OK");
 
             if (restart)
             {
