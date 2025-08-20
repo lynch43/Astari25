@@ -1,35 +1,75 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:Astari25.ViewModels"
-             x:Class="Astari25.Views.SettingsPage">
+<!--
+  File used for:
+  - Settings page layout with shared backgroundy
+  - Simple centered panel that holds the title, difficulty picker, and buttons
+  - Platform tweak: on Windows the inner panel is wider so the Picker fits comfortably
+-->
 
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Astari25.ViewModels"
+    x:Class="Astari25.Views.SettingsPage">
+
+    <!-- Bind to SettingsViewModel for Difficulty + Save/Reload -->
     <ContentPage.BindingContext>
-        <vm:SettingsViewModel/>
+        <vm:SettingsViewModel />
     </ContentPage.BindingContext>
 
     <Grid>
-        <Image Source="background.jpg" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
-        <BoxView Color="Black" Opacity="0.7" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+        <!-- Fullscreen background image -->
+        <Image
+            Source="background.jpg"
+            Aspect="AspectFill"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
+            InputTransparent="True" />
 
+        <!-- Dim overlay for readability -->
+        <BoxView
+            Color="Black"
+            Opacity="0.7"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill" />
+
+        <!-- Centered content panel (width adjusted per platform) -->
         <Grid Padding="24">
-            <VerticalStackLayout Spacing="22"
-                           Padding="24"
-                           BackgroundColor="Black"
-                           Opacity="0.85"
-                           HorizontalOptions="Center"
-                           WidthRequest="420">
-                <Label Text="Settings" FontSize="44" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+            <VerticalStackLayout
+                Spacing="20"
+                Padding="24"
+                BackgroundColor="Black"
+                Opacity="0.80"
+                HorizontalOptions="Center"
+                WidthRequest="{OnPlatform WinUI=860, Android=360, iOS=360}">
 
-                <Label Text="Difficulty" FontSize="20" TextColor="White"/>
+                <!-- Title -->
+                <Label
+                    Text="Settings"
+                    FontSize="44"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    HorizontalTextAlignment="Center" />
 
-                <Picker Title="Select"
-                FontSize="20"
-                HeightRequest="56"
-                BackgroundColor="DimGray"
-                TextColor="White"
-                TitleColor="White"
-                SelectedItem="{Binding Settings.Difficulty}">
+                <!-- Field label -->
+                <Label
+                    Text="Difficulty"
+                    HorizontalOptions="Center"
+                    FontSize="20"
+                    TextColor="White" />
+
+                <!-- Difficulty picker - Settings.Difficulty -->
+                <Picker
+                    Title="Select"
+                    FontSize="22"
+                    
+                    HeightRequest="75"
+                    WidthRequest="360"
+                    BackgroundColor="DimGray"
+                    TextColor="White"
+                    TitleColor="White"
+                    SelectedItem="{Binding Settings.Difficulty}">
                     <Picker.Items>
                         <x:String>Easy</x:String>
                         <x:String>Normal</x:String>
@@ -37,8 +77,24 @@
                     </Picker.Items>
                 </Picker>
 
-                <Button Text="Save" Command="{Binding SaveCommand}" HeightRequest="56" BackgroundColor="Purple" TextColor="White"/>
-                <Button Text="Reload" Command="{Binding ReloadCommand}" HeightRequest="56" BackgroundColor="Gray" TextColor="White"/>
+                <!-- Actions -->
+                <!-- Save Button saves the difficulty into prefernces. it will persist on restart-->
+                <Button
+                    Text="Save"
+                    Command="{Binding SaveCommand}"
+                    HeightRequest="56"
+                    WidthRequest="400"
+                    BackgroundColor="Blue"
+                    TextColor="White" />
+                
+                <!-- Reload Button will Revert back to Default info-->
+                <Button
+                    Text="Reload"
+                    Command="{Binding ReloadCommand}"
+                    HeightRequest="56"
+                    WidthRequest="400"
+                    BackgroundColor="Gray"
+                    TextColor="White" />
             </VerticalStackLayout>
         </Grid>
     </Grid>
