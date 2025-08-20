@@ -302,6 +302,8 @@ namespace Astari25.ViewModels
 
                     var enemy = new Enemy(startX, startY);
                     enemy.ApplyDifficulty(Preferences.Get(nameof(AppSettings.Difficulty), "Normal"));
+                    // Use the speed modifier on spawn
+                    enemy.Speed *= _speedMultiplier;
                     Enemies.Add(enemy);
                 }
             }
