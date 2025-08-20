@@ -10,6 +10,10 @@
 
 using Astari25.Models;
 using Astari25.ViewModels;
+using Astari25.Services;
+using Astari25.Models;
+// need this for preferences
+using Microsoft.Maui.Storage;
 
 #if WINDOWS
 using Microsoft.UI.Input;
@@ -127,6 +131,15 @@ public partial class GamePage : ContentPage
             _uiTimer?.Stop();
 
             bool restart = await DisplayAlert("Game Over", $"Final Score: {_viewModel.Score}", "Restart", "Main Menu");
+
+            // Save a record of this run before reset or navigation
+            await ResultService.AppendAsync(new GameResult
+            {
+                TimestampUtc = DateTime.UtcNow,
+                Score = _viewModel.Score,
+                Difficulty = Preferences.Get(nameof(AppSettings.Difficulty), "Normal")
+            });
+
             if (restart)
             {
                 _viewModel.Reset();
