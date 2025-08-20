@@ -175,6 +175,15 @@ namespace Astari25.ViewModels
         // 9) check game over. clamp again to avoid player movement
         public void Update()
         {
+            var now = DateTime.UtcNow;
+            if (_lastUpdateUtc == DateTime.MinValue) _lastUpdateUtc = now;
+            double dt = (now - _lastUpdateUtc).TotalSeconds;
+            _lastUpdateUtc = now;
+            _elapsedSecondsTotal += dt;
+
+            UpdateDifficulty();
+
+
             if (CanvasWidth < Player.Radius * 2) return;
 
             if (Player.Lives <= 0)
@@ -278,7 +287,7 @@ namespace Astari25.ViewModels
 
             // Spanw changes by difficulty set in the settings page
             _framesInBetweenSpawns++;
-            if (_framesInBetweenSpawns >= FramesPerSpawn)
+            if (_framesInBetweenSpawns >= _dynamicSpawnFrames)
             {
                 _framesInBetweenSpawns = 0;
 
