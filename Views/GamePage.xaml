@@ -113,7 +113,7 @@
                     FontSize="19"
                     HeightRequest="90"
                     WidthRequest="120"
-                    BackgroundColor="DodgerBlue"
+                    BackgroundColor="Red"
                     TextColor="White"
                     Clicked="OnShootClicked" />
             </Grid>

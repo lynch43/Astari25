@@ -78,18 +78,18 @@
                 </Picker>
 
                 <!-- Actions -->
-                <!-- Save Button saves the difficulty into prefernces. it will persist on restart-->
+                <!-- Apply Changes Button saves the difficulty into prefernces. it will persist on restart-->
                 <Button
-                    Text="Save"
+                    Text="Apply Changes"
                     Command="{Binding SaveCommand}"
                     HeightRequest="56"
                     WidthRequest="400"
                     BackgroundColor="Blue"
                     TextColor="White" />
                 
-                <!-- Reload Button will Revert back to Default info-->
+                <!-- Cancel Button will Revert back to Default info-->
                 <Button
-                    Text="Reload"
+                    Text="Cancel"
                     Command="{Binding ReloadCommand}"
                     HeightRequest="56"
                     WidthRequest="400"

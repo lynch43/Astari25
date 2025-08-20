@@ -48,7 +48,7 @@
                   Clicked="OnStartGameClicked"
                   HeightRequest="52"
                   CornerRadius="14"
-                  BackgroundColor="Purple"
+                  BackgroundColor="Blue"
                   TextColor="White"
                   FontAttributes="Bold" />
 
