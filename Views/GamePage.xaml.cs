@@ -14,6 +14,9 @@ using Astari25.Services;
 using Astari25.Models;
 // need this for preferences
 using Microsoft.Maui.Storage;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
+using MauiLauncher = Microsoft.Maui.ApplicationModel.Launcher;
 
 #if WINDOWS
 using Microsoft.UI.Input;
@@ -138,6 +141,37 @@ public partial class GamePage : ContentPage
                 _viewModel.Score,
                 Preferences.Get(nameof(AppSettings.Difficulty), "Normal")
             );
+
+            var filePath = Path.Combine(FileSystem.AppDataDirectory, "results.txt");
+
+            // Let the user copy or open the file
+            var choice = await DisplayActionSheet(
+                "Results saved",
+                "Close",
+                null,
+                "Copy path",
+                "Open file"
+            );
+
+            if (choice == "Copy path")
+            {
+                await Clipboard.Default.SetTextAsync(filePath);
+                await DisplayAlert("Copied", "Path copied to clipboard.", "OK");
+            }
+            else if (choice == "Open file")
+            {
+                try
+                {
+                    await MauiLauncher.OpenAsync(new OpenFileRequest
+                    {
+                        File = new ReadOnlyFile(filePath)
+                    });
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Open failed", $"Couldn't open file.\n{ex.Message}\n\nPath:\n{filePath}", "OK");
+                }
+            }
 
             // copy this folder path and then you can use Win+R and open the results.txt file
             await DisplayAlert("Results file folder", FileSystem.AppDataDirectory, "OK");
