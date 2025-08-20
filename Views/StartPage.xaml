@@ -1,22 +1,66 @@
 <?xml version="1.0" encoding="utf-8" ?>
+    
+<!-- 
+
+    File used for:
+    - Start screen layout that has a background image and an overlay
+    - Centered card that holds the title, Game motto?, Controls tip and the butttons
+    - Windows has a bigger card so that text isn't cramped or off screen
+    
+    - I had issue with Image loading. Still does not display on Android
+    - BackgroundImageSource and as <Image>
+    - Image should be the visible background
+    
+    - Use OnPlatform on WidthRequest , keeps the card sized okay on desktop and android emulator
+    - InputTransparent on the background image 
+    - It doesn't change taps or gestures meant for the buttons
+    
+    
+-->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Astari25.Views.StartPage"
              BackgroundImageSource="background">
-
+  
+    
+    <!--
+        Root Grid layers everything
+        Image at back of Z index
+        Overlay
+        Centered Content Card
+    -->
     <Grid>
+        
+        <!--
+            AspectFill Cover the screen
+            Cropping happens on edges if needed
+        -->
         <Image Source="background.jpg"
            Aspect="AspectFill"
            HorizontalOptions="Fill"
            VerticalOptions="Fill"
            InputTransparent="True" />
-
+        
+        
+        <!-- 
+            Transparent black overlay so text is easier to see
+        -->
         <BoxView Color="Black"
              Opacity="0.67"
              HorizontalOptions="Fill"
              VerticalOptions="Fill" />
-
+        
+        
+        <!-- 
+            Grid has three rows, blank Card blank
+            Centred the Card Verticallqy
+        -->
         <Grid Padding="24" RowDefinitions="*,Auto,*">
+            
+            <!-- 
+                This contains the card
+                Dark, gave it a border, rounded edges
+            -->
             <Border Grid.Row="1"
               BackgroundColor="Black"
               Stroke="Yellow"
@@ -24,26 +68,32 @@
               Padding="24"
               HorizontalOptions="Center"
               WidthRequest="{OnPlatform WinUI=420, Android=320, iOS=320}">
+                
+                <!-- Small Shadow, works on Windows and android-->
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="16"/>
                 </Border.StrokeShape>
                 <Border.Shadow>
                     <Shadow Opacity="0.5" Radius="18" />
                 </Border.Shadow>
-
+                
+                
+                <!-- Vertical stack for title, Motto, buttons and tip about the controls -->
                 <VerticalStackLayout Spacing="18" HorizontalOptions="Center">
                     <Label Text="ASTARI 25"
                  FontSize="44"
                  FontAttributes="Bold"
                  TextColor="White"
                  HorizontalTextAlignment="Center"/>
-
+                
+                <!-- Game Motto. OR bio-->
                     <Label Text="Arcade shooter • Dodge. Aim. Survive."
                  FontSize="14"
                  TextColor="LightGray"
                  HorizontalTextAlignment="Center"
                  Margin="0,0,0,8"/>
-
+                
+                <!-- Start Game. brings you to GamePag.xaml -->
                     <Button Text="Start Game"
                   Clicked="OnStartGameClicked"
                   HeightRequest="52"
@@ -51,7 +101,11 @@
                   BackgroundColor="Blue"
                   TextColor="White"
                   FontAttributes="Bold" />
-
+                
+                <!--
+                    Settings .. brings you to Settings.xaml
+                    Leaving this button plain because Start button needs to be most prominent    
+                -->
                     <Button Text="Settings"
                   Clicked="OnSettingsClicked"
                   HeightRequest="52"
@@ -60,7 +114,8 @@
                   TextColor="White"
                   BorderColor="White"
                   BorderWidth="1" />
-
+                
+                    <!-- This is control hint to stop confusion on controls -->
                     <Label Text="Tip: On Windows use A/D or ←/→ to move, S or ↑ to shoot"
                  FontSize="12"
                  TextColor="LightGray"
